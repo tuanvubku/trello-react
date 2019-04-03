@@ -6,6 +6,7 @@
   "author": "Scotty Eckenthal <scott.eckenthal@gmail.com>",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "@rematch/core": "^1.1.0",
     "gatsby": "^2.0.0",
     "gatsby-plugin-material-ui": "^1.2.4",
     "prettier": "^1.16.4",
@@ -13,6 +14,7 @@
     "react-dom": "^16.4.0",
     "react-redux": "5.0.5",
     "redux": "3.6.0",
+    "rematch-saga": "^1.0.1",
     "typeface-roboto": "^0.0.54"
   },
   "keywords": [
