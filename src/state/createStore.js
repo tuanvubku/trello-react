@@ -1,14 +1,12 @@
-import { createStore as reduxCreateStore } from 'redux';
+import { init } from '@rematch/core';
+import sagaPlugin from 'rematch-saga';
 
-import reducers from '@/reducers';
+import * as models from '@/models';
 
-const initialState = {
-  board: {},
-  list: {},
-  card: {},
-  sample: 'Sample store test'
-};
-
-const createStore = () => reduxCreateStore(reducers, initialState);
+const createStore = () =>
+  init({
+    models,
+    plugins: [sagaPlugin()]
+  });
 
 export default createStore;
