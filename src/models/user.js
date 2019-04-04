@@ -6,7 +6,9 @@ import { setUser } from '@/utils/auth';
 
 export const user = {
   state: {
-    status: undefined
+    status: undefined,
+    user: {},
+    role: []
   },
 
   reducers: {
@@ -14,13 +16,17 @@ export const user = {
       setUser({ user, role });
       return Object.assign({}, state, {
         ...state,
-        status
+        status,
+        user,
+        role
       });
     },
     clear(state) {
       setUser({ user: {}, role: [] });
       return {
-        status: undefined
+        status: undefined,
+        user: {},
+        role: []
       };
     }
   },
@@ -41,12 +47,8 @@ export const user = {
       console.log(`Logout`);
       yield delay(1000);
       yield put({
-        type: 'user/set',
-        payload: {
-          status: undefined,
-          user: {},
-          role: []
-        }
+        type: 'user/clear',
+        payload: {}
       });
     },
     *register({}) {

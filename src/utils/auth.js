@@ -18,9 +18,7 @@ export const isLoggedIn = () => {
 
   const user = getUser();
 
-  console.log('user', user, '!!user', !!user);
-
-  return !!user;
+  return !user;
 };
 
 export const getRole = () => {
