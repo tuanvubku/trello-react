@@ -1,17 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { navigate } from 'gatsby';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import BasicLayout from '@/layouts/basic';
 
-@connect(({ board }) => ({
-  boardName: board.name,
-  boardAuthor: board.author
-}))
-class Home extends React.Component {
+class Index extends React.Component {
   state = {
-    newBoardName: ''
+    boardName: ''
   };
 
   handleChange = name => event => {
@@ -21,40 +17,36 @@ class Home extends React.Component {
   };
 
   onSubmit = () => {
-    const { dispatch } = this.props;
-    const { newBoardName } = this.state;
-    dispatch({
-      type: 'board/setName',
-      payload: {
-        name: newBoardName
-      }
-    });
+    const { boardName } = this.state;
+    navigate(`/board/${boardName}`);
+  };
+
+  toLogin = () => {
+    navigate(`/auth/login`);
   };
 
   render() {
-    const { boardAuthor, boardName } = this.props;
-
     return (
       <BasicLayout>
-        <div>
-          <p>Current board name: {boardName}</p>
-          <p>Board author: {boardAuthor}</p>
-          <TextField
-            id="outlined-name"
-            label="Name"
-            value={this.state.newBoardName}
-            onChange={this.handleChange('newBoardName')}
-            margin="normal"
-            variant="outlined"
-          />
-          <br />
-          <Button variant="contained" color="primary" onClick={this.onSubmit}>
-            Change name
-          </Button>
-        </div>
+        <Button variant="contained" color="primary" onClick={this.toLogin}>
+          To Login
+        </Button>
+        <p>Enter board name</p>
+        <TextField
+          id="outlined-name"
+          label="Name"
+          value={this.state.boardName}
+          onChange={this.handleChange('boardName')}
+          margin="normal"
+          variant="outlined"
+        />
+        <br />
+        <Button variant="contained" color="primary" onClick={this.onSubmit}>
+          To board
+        </Button>
       </BasicLayout>
     );
   }
 }
 
-export default Home;
+export default Index;
