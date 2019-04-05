@@ -83,10 +83,12 @@ const BoardContainer = ({ board }) => (
   </ProtectedView>
 );
 
-export default () => (
+const BoardView = () => (
   <BasicLayout>
     <Router>
       <PrivateRoute path="/board/:board" component={BoardContainer} />
     </Router>
   </BasicLayout>
 );
+
+export default BoardView;

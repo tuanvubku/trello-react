@@ -56,7 +56,6 @@ class Index extends React.Component {
     } = this.props;
     let userInfo;
 
-    console.log(userLoading);
     if (userLoading) return 'Loading...';
 
     if (user.name) {
