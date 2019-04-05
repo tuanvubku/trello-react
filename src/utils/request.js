@@ -1,3 +1,5 @@
+import { getCurrentUser, getRole } from '@/utils/auth';
+
 /*
  * request(
  *  URL, // URL
@@ -10,7 +12,16 @@
  * )
  */
 const request = async (url, { method, data }) => {
-  if (url === '/api/login') {
+  // fake api request
+  // in reality, this one will get jwt from localStorage
+  // sends with the request in header
+  if (url === '/api/me') {
+    return {
+      status: 'ok',
+      user: getCurrentUser(),
+      role: getRole()
+    };
+  } else if (url === '/api/login') {
     return {
       status: 'ok',
       user: {

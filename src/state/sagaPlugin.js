@@ -2,6 +2,7 @@ import createSagaMiddleware from 'redux-saga';
 
 function getGeneratorFunc() {
   try {
+    // eslint-disable-next-line no-new-func
     return Function('return function*() {}')();
   } catch (e) {}
 }

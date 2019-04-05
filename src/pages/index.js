@@ -6,9 +6,10 @@ import Button from '@material-ui/core/Button';
 
 import BasicLayout from '@/layouts/basic';
 
-@connect(({ user }) => ({
+@connect(({ loading, user }) => ({
   user: user.user,
-  role: user.role
+  role: user.role,
+  userLoading: loading.effects.user.fetchCurrent
 }))
 class Index extends React.Component {
   state = {
@@ -38,18 +39,31 @@ class Index extends React.Component {
     });
   };
 
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch.user.fetchCurrent({});
+    // dispatch({
+    //   type: 'user/fetchCurrent',
+    //   payload: {}
+    // });
+  }
+
   render() {
     const {
-      user: { name, age },
-      role
+      userLoading,
+      user, // fail safe
+      role // fail safe
     } = this.props;
     let userInfo;
 
-    if (name) {
+    console.log(userLoading);
+    if (userLoading) return 'Loading...';
+
+    if (user.name) {
       userInfo = (
         <div>
-          <p>Ten {name}</p>
-          <p>Tuoi {age}</p>
+          <p>Ten {user.name}</p>
+          <p>Tuoi {user.age}</p>
           <p>role: {role}</p>
           <Button variant="contained" color="primary" onClick={this.toLogout}>
             Logout

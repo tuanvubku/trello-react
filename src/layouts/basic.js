@@ -1,9 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
 import { connect } from 'react-redux';
-
-import Button from '@material-ui/core/Button';
 
 class BasicLayout extends React.Component {
   render() {
@@ -11,4 +7,4 @@ class BasicLayout extends React.Component {
   }
 }
 
-export default BasicLayout;
+export default connect(state => ({}))(BasicLayout);

@@ -1,4 +1,4 @@
-import { delay, call, put } from 'redux-saga/effects';
+import { delay, put } from 'redux-saga/effects';
 
 export const board = {
   state: {
@@ -13,7 +13,7 @@ export const board = {
   effects: {
     *fetchBoard({ name }) {
       console.log(`Fetching board ${name}`);
-      yield delay(5000);
+      yield delay(2000);
       yield put({
         type: 'board/set',
         payload: {
@@ -23,7 +23,7 @@ export const board = {
     },
     *changeBoardName({ name }) {
       console.log(`Change board name to ${name}`);
-      yield delay(5000);
+      yield delay(2000);
       yield put({
         type: 'board/set',
         payload: {
