@@ -45,6 +45,7 @@ const createSagaPlugin = (sagaMiddleware = createSagaMiddleware()) => ({
         const boundFn = fn.bind(this.dispatch[model.name]);
         this.effects[`${model.name}/${effectName}`] = (...p) =>
           sagaMiddleware.run(boundFn, ...p).done;
+        // eslint-disable-next-line no-useless-call
         this.dispatch[model.name][effectName] = this.createDispatcher.apply(
           this,
           [model.name, effectName]

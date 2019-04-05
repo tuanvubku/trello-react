@@ -33,7 +33,6 @@ export const user = {
   effects: {
     *fetchCurrent(payload) {
       console.log('Fetch current User');
-      yield delay(1000);
       const data = yield call(fetchCurrent, {});
       yield put({
         type: 'user/set',
@@ -42,7 +41,6 @@ export const user = {
     },
     *login({ username, password }) {
       console.log(`Login using ${username}:${password}`);
-      yield delay(2000);
       const response = yield call(login, { username, password });
       if (response.status === 'ok') {
         yield put({
