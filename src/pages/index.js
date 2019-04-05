@@ -1,17 +1,19 @@
 import React from 'react';
+import { navigate } from 'gatsby';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import BasicLayout from '@/layouts/basic';
 
-@connect(({ board }) => ({
-  boardName: board.name,
-  boardAuthor: board.author
+@connect(({ loading, user }) => ({
+  user: user.user,
+  role: user.role,
+  userLoading: loading.effects.user.fetchCurrent
 }))
-class Home extends React.Component {
+class Index extends React.Component {
   state = {
-    newBoardName: ''
+    boardName: ''
   };
 
   handleChange = name => event => {
@@ -21,40 +23,79 @@ class Home extends React.Component {
   };
 
   onSubmit = () => {
+    const { boardName } = this.state;
+    navigate(`/board/${boardName}`);
+  };
+
+  toLogin = () => {
+    navigate(`/auth/login`);
+  };
+
+  toLogout = () => {
     const { dispatch } = this.props;
-    const { newBoardName } = this.state;
     dispatch({
-      type: 'board/setName',
-      payload: {
-        name: newBoardName
-      }
+      type: 'user/logout',
+      payload: {}
     });
   };
 
-  render() {
-    const { boardAuthor, boardName } = this.props;
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch.user.fetchCurrent({});
+    // dispatch({
+    //   type: 'user/fetchCurrent',
+    //   payload: {}
+    // });
+  }
 
-    return (
-      <BasicLayout>
+  render() {
+    const {
+      userLoading,
+      user, // fail safe
+      role // fail safe
+    } = this.props;
+    let userInfo;
+
+    console.log(userLoading);
+    if (userLoading) return 'Loading...';
+
+    if (user.name) {
+      userInfo = (
         <div>
-          <p>Current board name: {boardName}</p>
-          <p>Board author: {boardAuthor}</p>
-          <TextField
-            id="outlined-name"
-            label="Name"
-            value={this.state.newBoardName}
-            onChange={this.handleChange('newBoardName')}
-            margin="normal"
-            variant="outlined"
-          />
-          <br />
-          <Button variant="contained" color="primary" onClick={this.onSubmit}>
-            Change name
+          <p>Ten {user.name}</p>
+          <p>Tuoi {user.age}</p>
+          <p>role: {role}</p>
+          <Button variant="contained" color="primary" onClick={this.toLogout}>
+            Logout
           </Button>
         </div>
+      );
+    } else {
+      userInfo = (
+        <Button variant="contained" color="primary" onClick={this.toLogin}>
+          To Login
+        </Button>
+      );
+    }
+    return (
+      <BasicLayout>
+        {userInfo}
+        <p>Enter board name</p>
+        <TextField
+          id="outlined-name"
+          label="Name"
+          value={this.state.boardName}
+          onChange={this.handleChange('boardName')}
+          margin="normal"
+          variant="outlined"
+        />
+        <br />
+        <Button variant="contained" color="primary" onClick={this.onSubmit}>
+          To board
+        </Button>
       </BasicLayout>
     );
   }
 }
 
-export default Home;
+export default Index;

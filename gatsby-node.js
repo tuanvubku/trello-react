@@ -10,3 +10,13 @@ exports.onCreateWebpackConfig = ({ stage, actions }) => {
     }
   });
 };
+
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions;
+
+  if (page.path.match(/^\/board/)) {
+    page.matchPath = `/board/*`;
+
+    createPage(page);
+  }
+};
