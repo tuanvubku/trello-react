@@ -1,0 +1,23 @@
+{
+   "compilerOptions": {
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "moduleResolution": "node",
+      "allowJs": true,
+      /* Basic Options */
+      "target": "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+      "module": "commonjs", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
+      "lib": [
+         "es6",
+         "dom"
+      ],
+      "outDir": "db/dist"
+   },
+   "exclude": [
+      "node_modules"
+   ],
+   "include": [
+      "db/**/*"
+   ]
+   
+}
