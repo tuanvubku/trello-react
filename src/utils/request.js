@@ -1,6 +1,15 @@
 import axios from 'axios';
 import { navigate } from 'gatsby';
 
+import { getUserJWT } from '@/utils/auth';
+
+const METHOD = {
+  GET: 'get',
+  POST: 'post',
+  DELETE: 'delete',
+  PATCH: 'patch'
+};
+
 const codeMessage = {
   200: 'Success',
   201: '',
@@ -41,23 +50,34 @@ const checkStatus = response => {
  *  }
  * )
  */
-const request = (endpoint, { method, data }) => {
+const request = (endpoint, { method, data = {}, params = {} }) => {
   // fake api request
   // in reality, this one will get jwt from localStorage
   // sends with the request in header
   const API_URL = process.env.API_URL;
   const API_PORT = process.env.PORT;
-  const url = `http://${API_URL}:${API_PORT}${endpoint}`;
 
-  console.log(`${url} ${method} ${JSON.stringify(data)}`);
+  const JWT = getUserJWT();
 
-  return axios(url, {
+  console.log(
+    `${API_URL}:${API_PORT}${endpoint}?${JSON.stringify(
+      params
+    )} ${method} ${JSON.stringify(data)}`
+  );
+
+  return axios({
+    url: endpoint,
+    baseURL: `http://${API_URL}:${API_PORT}`,
     method,
-    data
+    data,
+    params,
+    headers: {
+      authorization: `Bearer ${JWT}`
+    }
   })
     .then(checkStatus)
     .then(({ data, status }) => {
-      if (method === 'DELETE' || status === 204) {
+      if (method === METHOD.DELETE || status === 204) {
         return data;
       }
       return data;
@@ -87,3 +107,4 @@ const request = (endpoint, { method, data }) => {
 };
 
 export default request;
+export { METHOD };

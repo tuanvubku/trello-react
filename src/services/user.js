@@ -1,15 +1,17 @@
-import request from '@/utils/request';
+import request, { METHOD } from '@/utils/request';
 
-export const login = async params => {
-  return request('/api/login', {
-    method: 'post',
-    data: params
+export const login = async ({ data, params }) => {
+  return request('/api/auth/login', {
+    method: METHOD.POST,
+    data,
+    params
   });
 };
 
-export const fetchCurrent = async params => {
-  return request('/api/me', {
-    method: 'get',
-    data: {}
+export const fetchCurrentUser = async ({ data, params }) => {
+  return request('/api/auth/me', {
+    method: METHOD.GET,
+    data,
+    params
   });
 };
