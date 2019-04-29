@@ -27,8 +27,8 @@ const sampleBoards = [
     _id: 3,
     name: 'Interview prepare',
     ownerId: 1,
-    modelView: '',
-    background: 'public',
+    modelView: 'public',
+    background: '',
     member: [1, 2, 3],
     dateCreated: moment().subtract(3, 'weeks'),
     list: [7, 8, 9]

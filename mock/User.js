@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 
+const { sampleBoards } = require('./Board');
+
 const sampleUsers = [
   {
     _id: 1,
@@ -36,6 +38,17 @@ const sampleUsers = [
     role: ['role']
   }
 ];
+
+router.get('/myboard', (req, res) => {
+  const { id: userId } = req.user;
+
+  const myboards = sampleBoards.filter(({ member }) => member.includes(userId));
+
+  res.send({
+    status: 'ok',
+    board: myboards
+  });
+});
 
 module.exports = {
   userEndpoint: router,
