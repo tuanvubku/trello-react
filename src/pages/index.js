@@ -1,29 +1,39 @@
 import React from 'react';
 import { navigate } from 'gatsby';
 import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
+
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+// import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+import { withStyles } from '@material-ui/core/styles';
 
 import BasicLayout from '@/layouts/basic';
+
+const styles = {
+  card: {
+    maxWidth: 345
+  },
+  media: {
+    height: 140,
+    objectFit: 'cover'
+  }
+};
 
 @connect(({ loading, user }) => ({
   user: user.user,
   role: user.role,
+  board: user.board,
   userLoading: loading.effects.user.fetchCurrent
 }))
+@withStyles(styles)
 class Index extends React.Component {
-  state = {
-    boardId: ''
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  onSubmit = () => {
-    const { boardId } = this.state;
+  onSubmit = boardId => {
     navigate(`/board/${boardId}`);
   };
 
@@ -41,7 +51,8 @@ class Index extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch.user.fetchCurrent({});
+    dispatch.user.fetchCurrentUser();
+    dispatch.user.fetchUserBoard();
     // dispatch({
     //   type: 'user/fetchCurrent',
     //   payload: {}
@@ -49,7 +60,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const { userLoading, user = {}, role = [] } = this.props;
+    const { userLoading, user = {}, role = [], board = [] } = this.props;
     let userInfo;
 
     if (userLoading) return 'Loading...';
@@ -71,22 +82,59 @@ class Index extends React.Component {
         </Button>
       );
     }
+
+    console.log(board);
+    const { classes } = this.props;
     return (
       <BasicLayout>
         {userInfo}
-        <p>Enter board id</p>
-        <TextField
-          id="outlined-name"
-          label="Name"
-          value={this.state.boardId}
-          onChange={this.handleChange('boardId')}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <Button variant="contained" color="primary" onClick={this.onSubmit}>
-          To board
-        </Button>
+        {board.map(
+          ({
+            _id,
+            background,
+            dateCreated,
+            list,
+            member,
+            name,
+            modelView,
+            ownerId
+          }) => (
+            <Card key={_id} className={classes.card}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  component="img"
+                  alt={name}
+                  src="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+                  // src={background}
+                  title={name}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {name}
+                  </Typography>
+                  <Typography component="p">
+                    Member: {member.map(m => `${m} `)}
+                  </Typography>
+                  <Typography component="p">{dateCreated}</Typography>
+                  <Typography component="p">{modelView}</Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button size="small" color="primary">
+                  {ownerId === user._id ? 'Setting' : 'Not owner'}
+                </Button>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={() => this.onSubmit(_id)}
+                >
+                  {'Go in'}
+                </Button>
+              </CardActions>
+            </Card>
+          )
+        )}
       </BasicLayout>
     );
   }
