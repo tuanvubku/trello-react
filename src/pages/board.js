@@ -1,75 +1,70 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// import { navigate } from 'gatsby';
 import { Router } from '@reach/router';
-import { navigate } from 'gatsby';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+
+// import TextField from '@material-ui/core/TextField';
+// import Button from '@material-ui/core/Button';
 
 import PrivateRoute from '@/components/PrivateRoute';
 import ProtectedView from '@/components/ProtectedView';
 import BasicLayout from '@/layouts/basic';
 
-@connect(({ board, loading }) => ({
-  boardName: board.name,
-  boardAuthor: board.author,
-  loading: loading.models.board
-}))
+import List from '@/components/List';
+import AddButton from '@/components/AddButton';
+
+@connect(state => ({}))
 class Board extends React.Component {
-  state = {
-    newBoardName: ''
-  };
-
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  onSubmit = () => {
-    const { dispatch } = this.props;
-    const { newBoardName } = this.state;
-    dispatch.board.changeBoardName({
-      name: newBoardName
-    });
-  };
-
-  toIndex = () => {
-    navigate('/');
-  };
-
-  componentDidMount() {
-    const { dispatch, board } = this.props;
-    dispatch.board.fetchBoard({
-      name: board
-    });
-  }
-
   render() {
-    const { boardAuthor, boardName, loading } = this.props;
-    console.log(loading);
-    if (loading) {
-      return 'Loading';
-    }
+    const styles = {
+      boardContainer: {
+        display: 'flex',
+        flexDirection: 'row'
+      }
+    };
+
+    // const { title, lists } = this.props;
+    const title = 'Board no name';
+    const lists = [
+      {
+        id: 1,
+        title: 'List 1',
+        cards: [
+          {
+            id: 1,
+            content: 'Ha ha ha'
+          },
+          {
+            id: 2,
+            content: 'A ha ha'
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: 'List 2',
+        cards: [
+          {
+            id: 3,
+            content: 'Co mot con vit'
+          },
+          {
+            id: 4,
+            content: 'Co hai con vit'
+          }
+        ]
+      }
+    ];
 
     return (
       <div>
-        <p>Current board name: {boardName}</p>
-        <p>Board author: {boardAuthor}</p>
-        <TextField
-          id="outlined-name"
-          label="Name"
-          value={this.state.newBoardName}
-          onChange={this.handleChange('newBoardName')}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <Button variant="contained" color="primary" onClick={this.onSubmit}>
-          Change name
-        </Button>
-        <Button variant="contained" color="primary" onClick={this.toIndex}>
-          To index
-        </Button>
+        <h2>{title}</h2>
+        <div style={styles.boardContainer}>
+          {lists.map(({ title, cards, id }) => (
+            <List title={title} cards={cards} key={id} idList={id} />
+          ))}
+          <AddButton list />
+        </div>
       </div>
     );
   }
@@ -78,7 +73,7 @@ class Board extends React.Component {
 // board is pass through props,
 // by PrivateRoute from Router
 const BoardContainer = ({ board }) => (
-  <ProtectedView allowedRole={['admin']}>
+  <ProtectedView allowedRole={['user', 'admin']}>
     <Board board={board} />
   </ProtectedView>
 );

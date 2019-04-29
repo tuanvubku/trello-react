@@ -13,7 +13,7 @@ import BasicLayout from '@/layouts/basic';
 }))
 class Index extends React.Component {
   state = {
-    boardName: ''
+    boardId: ''
   };
 
   handleChange = name => event => {
@@ -23,8 +23,8 @@ class Index extends React.Component {
   };
 
   onSubmit = () => {
-    const { boardName } = this.state;
-    navigate(`/board/${boardName}`);
+    const { boardId } = this.state;
+    navigate(`/board/${boardId}`);
   };
 
   toLogin = () => {
@@ -49,20 +49,15 @@ class Index extends React.Component {
   }
 
   render() {
-    const {
-      userLoading,
-      user, // fail safe
-      role // fail safe
-    } = this.props;
+    const { userLoading, user = {}, role = [] } = this.props;
     let userInfo;
 
     if (userLoading) return 'Loading...';
 
-    if (user.name) {
+    if (user.username) {
       userInfo = (
         <div>
-          <p>Ten {user.name}</p>
-          <p>Tuoi {user.age}</p>
+          <p>Ten {user.username}</p>
           <p>role: {role}</p>
           <Button variant="contained" color="primary" onClick={this.toLogout}>
             Logout
@@ -79,12 +74,12 @@ class Index extends React.Component {
     return (
       <BasicLayout>
         {userInfo}
-        <p>Enter board name</p>
+        <p>Enter board id</p>
         <TextField
           id="outlined-name"
           label="Name"
-          value={this.state.boardName}
-          onChange={this.handleChange('boardName')}
+          value={this.state.boardId}
+          onChange={this.handleChange('boardId')}
           margin="normal"
           variant="outlined"
         />
