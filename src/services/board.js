@@ -1,9 +1,9 @@
 import request, { METHOD } from '@/utils/request';
 
-export const fetchBoard = async ({ query, data, params }) => {
+const { GET } = METHOD;
+
+export const fetchBoard = async ({ query }) => {
   return request(`/api/board/${query}`, {
-    method: METHOD.GET,
-    data,
-    params
+    method: GET
   });
 };

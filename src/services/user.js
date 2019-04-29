@@ -1,17 +1,22 @@
 import request, { METHOD } from '@/utils/request';
 
-export const login = async ({ data, params }) => {
+const { GET, POST } = METHOD;
+
+export const login = async ({ data }) => {
   return request('/api/auth/login', {
-    method: METHOD.POST,
-    data,
-    params
+    method: POST,
+    data
   });
 };
 
-export const fetchCurrentUser = async ({ data, params }) => {
+export const fetchCurrentUser = async () => {
   return request('/api/auth/me', {
-    method: METHOD.GET,
-    data,
-    params
+    method: GET
+  });
+};
+
+export const fetchUserBoard = async () => {
+  return request('/api/user/myboard', {
+    method: GET
   });
 };

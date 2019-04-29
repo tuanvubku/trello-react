@@ -1,33 +1,22 @@
-import { delay, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
+
+import { fetchBoard } from '@/services/board';
 
 export const board = {
-  state: {
-    name: '',
-    author: 'Board author'
-  },
+  state: {},
   reducers: {
-    set(state, { name }) {
-      return { ...state, name };
+    set(state, boardInfo) {
+      return boardInfo;
     }
   },
   effects: {
-    *fetchBoard({ name }) {
-      console.log(`Fetching board ${name}`);
-      yield delay(2000);
+    *fetchBoard({ id }) {
+      console.log(`Fetching board #${id}`);
+      const data = yield call(fetchBoard, { query: id });
       yield put({
         type: 'board/set',
         payload: {
-          name
-        }
-      });
-    },
-    *changeBoardName({ name }) {
-      console.log(`Change board name to ${name}`);
-      yield delay(2000);
-      yield put({
-        type: 'board/set',
-        payload: {
-          name
+          data
         }
       });
     }
