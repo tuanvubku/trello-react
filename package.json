@@ -18,7 +18,7 @@
     "gatsby": "^2.0.0",
     "gatsby-plugin-material-ui": "^1.2.4",
     "moment": "^2.24.0",
-    "prettier": "^1.16.4",
+    "prettier": "^1.17.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-redux": "7.0.3",
