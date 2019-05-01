@@ -17,10 +17,12 @@
     "express": "^4.16.4",
     "gatsby": "^2.0.0",
     "gatsby-plugin-material-ui": "^1.2.4",
+    "moment": "^2.24.0",
     "prettier": "^1.16.4",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-redux": "5.0.5",
+    "react-textarea-autosize": "^7.1.0",
     "redux": "3.6.0",
     "redux-saga": "^1.0.2",
     "typeface-roboto": "^0.0.54"
@@ -45,7 +47,7 @@
     "dev": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "mock": "node mock/mock.js",
+    "mock": "nodemon --watch mock mock/mock.js",
     "lint": "eslint ./",
     "format": "prettier --write \"src/**/*.js\""
   },

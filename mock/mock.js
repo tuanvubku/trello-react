@@ -2,7 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const { currentUser } = require('./User');
+const { authEndpoint, sampleToken } = require('./Auth');
+const { userEndpoint } = require('./User');
+const { boardEndpoint } = require('./Board');
+const { listEndpoint } = require('./List');
+const { cardEndpoint } = require('./Card');
 
 const app = express();
 const PORT = process.env.MOCK_PORT || 3001;
@@ -12,32 +16,52 @@ app.use(bodyParser.json());
 
 // logger
 app.use('/**', (req, res, next) => {
+  const {
+    method,
+    originalUrl,
+    headers: { authorization },
+    body
+  } = req;
+
   console.log(
-    `[${req.method}] ${req.originalUrl} || ${JSON.stringify(req.body)}`
+    `[${method}] ${originalUrl} ||
+      ${authorization} ||
+      ${JSON.stringify(body)}`
   );
   next();
 });
 
-app.get('/api/me', (req, res) => {
-  res.send({
-    status: 'ok',
-    ...currentUser
-  });
+app.use((req, res, next) => {
+  // check token and init req.user
+  const { authorization: raw_token = 'Bearer ' } = req.headers;
+  const token = raw_token.split('Bearer ')[1];
+  const freeRoute = ['/api/auth/login', '/api/auth/register'];
+
+  if (freeRoute.find(r => r === req.url)) {
+    next();
+  } else if (token.includes(sampleToken)) {
+    const userId = token.split(sampleToken)[1];
+    req.user = {
+      id: parseInt(userId)
+    };
+    next();
+  } else {
+    throw Error('Token incorrect');
+  }
 });
 
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
+app.use('/api/auth', authEndpoint);
+app.use('/api/user', userEndpoint);
+app.use('/api/board', boardEndpoint);
+app.use('/api/list', listEndpoint);
+app.use('/api/card', cardEndpoint);
 
-  if (username === 'nguyenvanteo' && password === '123456') {
-    res.send({
-      status: 'ok',
-      ...currentUser
-    });
-  } else {
-    res.send({
-      status: 'error'
-    });
-  }
+app.use((err, req, res, next) => {
+  res.send({
+    status: 'error',
+    error: 500,
+    message: err.message
+  });
 });
 
 app.listen(PORT, err => {
