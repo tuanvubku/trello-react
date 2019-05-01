@@ -1,9 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import TrelloCard from '@/components/Card';
 import AddButton from '@/components/AddButton';
 
+@connect(({ card }) => ({
+  globalCards: card.cards
+}))
 class List extends React.Component {
+  componentDidMount() {
+    const { dispatch, idList, idBoard } = this.props;
+    dispatch({
+      type: 'card/fetchCardOfListFromBoard',
+      payload: {
+        boardId: idBoard,
+        listId: idList
+      }
+    });
+  }
+
   render() {
     const styles = {
       container: {
@@ -20,14 +35,16 @@ class List extends React.Component {
       }
     };
 
-    const { title, cards, idList } = this.props;
+    const { title, idList } = this.props;
+    const { globalCards } = this.props;
+    const cards = globalCards[idList] ? globalCards[idList] : [];
+
     return (
       <div style={styles.container}>
         <h4 style={styles.styleHeader}>{title}</h4>
         {cards.map(card => (
-          <TrelloCard key={card.id} content={card.content} />
+          <TrelloCard key={card._id} card={card} />
         ))}
-
         <AddButton idList={idList} />
       </div>
     );

@@ -12,11 +12,12 @@ class TrelloCard extends React.Component {
       }
     };
 
-    const { content } = this.props;
+    const { card } = this.props;
+    const { description } = card;
     return (
       <Card style={styles.cardContainer}>
         <CardContent>
-          <Typography gutterBottom>{content}</Typography>
+          <Typography gutterBottom>{description}</Typography>
         </CardContent>
       </Card>
     );

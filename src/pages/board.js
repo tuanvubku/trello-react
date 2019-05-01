@@ -13,8 +13,21 @@ import BasicLayout from '@/layouts/basic';
 import List from '@/components/List';
 import AddButton from '@/components/AddButton';
 
-@connect(state => ({}))
+@connect(({ board, list }) => ({
+  boardInfo: board.boardInfo,
+  lists: list.lists
+}))
 class Board extends React.Component {
+  componentDidMount() {
+    const { boardId, dispatch } = this.props;
+    dispatch({
+      type: 'board/fetchBoard',
+      payload: {
+        id: boardId
+      }
+    });
+  }
+
   render() {
     const styles = {
       boardContainer: {
@@ -23,45 +36,21 @@ class Board extends React.Component {
       }
     };
 
-    // const { title, lists } = this.props;
-    const title = 'Board no name';
-    const lists = [
-      {
-        id: 1,
-        title: 'List 1',
-        cards: [
-          {
-            id: 1,
-            content: 'Ha ha ha'
-          },
-          {
-            id: 2,
-            content: 'A ha ha'
-          }
-        ]
-      },
-      {
-        id: 2,
-        title: 'List 2',
-        cards: [
-          {
-            id: 3,
-            content: 'Co mot con vit'
-          },
-          {
-            id: 4,
-            content: 'Co hai con vit'
-          }
-        ]
-      }
-    ];
+    const { boardInfo = {}, lists = [] } = this.props;
+    const { name: title = '', _id: boardId } = boardInfo;
 
     return (
       <div>
         <h2>{title}</h2>
         <div style={styles.boardContainer}>
-          {lists.map(({ title, cards, id }) => (
-            <List title={title} cards={cards} key={id} idList={id} />
+          {lists.map(({ name, cards, _id }) => (
+            <List
+              title={name}
+              cards={cards}
+              key={_id}
+              idList={_id}
+              idBoard={boardId}
+            />
           ))}
           <AddButton list />
         </div>
@@ -74,7 +63,7 @@ class Board extends React.Component {
 // by PrivateRoute from Router
 const BoardContainer = ({ board }) => (
   <ProtectedView allowedRole={['user', 'admin']}>
-    <Board board={board} />
+    <Board boardId={board} />
   </ProtectedView>
 );
 

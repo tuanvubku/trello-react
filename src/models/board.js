@@ -5,18 +5,22 @@ import { fetchBoard } from '@/services/board';
 export const board = {
   state: {},
   reducers: {
-    set(state, boardInfo) {
-      return boardInfo;
+    set(state, { boardInfo }) {
+      return { ...state, boardInfo };
     }
   },
   effects: {
     *fetchBoard({ id }) {
       console.log(`Fetching board #${id}`);
-      const data = yield call(fetchBoard, { query: id });
+      const { board } = yield call(fetchBoard, { query: id });
       yield put({
         type: 'board/set',
+        payload: { boardInfo: board }
+      });
+      yield put({
+        type: 'list/fetchListOfBoard',
         payload: {
-          data
+          boardId: id
         }
       });
     }

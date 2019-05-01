@@ -8,7 +8,8 @@ export const user = {
   state: {
     status: undefined,
     user: {},
-    role: []
+    role: [],
+    board: []
   },
 
   reducers: {
@@ -24,11 +25,12 @@ export const user = {
       return { ...state, board };
     },
     clear(state) {
-      setUser({ user: {}, role: [] });
+      setUser();
       return {
         status: undefined,
         user: {},
-        role: []
+        role: [],
+        board: []
       };
     }
   },

@@ -1,17 +1,46 @@
+import { call, put } from 'redux-saga/effects';
+
+import { fetchListOfBoard } from '@/services/list';
+
 export const list = {
-  state: [
-    {
-      name: 'List 1',
-      cards: [
-        {
-          title: 'Title 1'
-        },
-        {
-          title: 'Title 2'
-        }
-      ]
+  state: {
+    lists: []
+  },
+  reducers: {
+    set(state, { lists }) {
+      return { ...state, lists };
     }
-  ],
-  reducers: {},
-  effects: {}
+  },
+  effects: {
+    *fetchListOfBoard({ boardId }) {
+      console.log(`Fetching list of board #${boardId}`);
+      const { list } = yield call(fetchListOfBoard, {
+        params: { board: boardId }
+      });
+      yield put({
+        type: 'list/set',
+        payload: {
+          lists: list
+        }
+      });
+
+      // yield all(
+      //   list.map(({ _id: listId }) =>
+      //     put({
+      //       type: 'card/fetchCardOfListFromBoard',
+      //       payload: {
+      //         boardId,
+      //         listId
+      //       }
+      //     })
+      //   )
+      // );
+    },
+    *fetchListInfo({ id }) {
+      console.log(`Fetching list #${id}`);
+      // const { list } = yield call(fetchListInfo, {
+      // query: id
+      // });
+    }
+  }
 };
