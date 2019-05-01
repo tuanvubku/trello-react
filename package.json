@@ -47,7 +47,7 @@
     "dev": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
-    "mock": "node mock/mock.js",
+    "mock": "nodemon --watch mock mock/mock.js",
     "lint": "eslint ./",
     "format": "prettier --write \"src/**/*.js\""
   },
