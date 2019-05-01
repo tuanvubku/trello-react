@@ -11,7 +11,7 @@ const getUserRole = () =>
 const getJWT = () =>
   window.localStorage.JWTtoken ? window.localStorage.JWTtoken : '';
 
-export const setUser = ({ user = {}, role = ['user'], token = '' }) => {
+export const setUser = ({ user = {}, role = ['guest'], token = '' }) => {
   window.localStorage.currentUser = JSON.stringify(user);
   window.localStorage.userRole = JSON.stringify(role);
   window.localStorage.JWTtoken = token;
