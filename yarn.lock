@@ -930,10 +930,10 @@
   dependencies:
     redux "^4.0.1"
 
-"@rematch/loading@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@rematch/loading/-/loading-0.5.1.tgz#7272b55c1e3a91a2eb562c561da10da8d65409b9"
-  integrity sha512-JxIYIrdV8AVxaTrx4g5Gfc+71SU5/9zCliMSAGCKQtnYFW7G4UX9UgOCgpUlJGgiU81VPLDAHviQou8gXjGlfg==
+"@rematch/loading@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@rematch/loading/-/loading-1.1.3.tgz#0bb095e7ab9f6b7f2e9e1e3f69d9c27053efd2f0"
+  integrity sha512-7TKtwncKZ6EuvX/fPdlvlik8JZTC+/wZq90Zhiqlf5xA70iAQEFIdkGvpMZUkWgWay9DRhZhw0180tdJ6S3LnQ==
 
 "@types/configstore@^2.1.1":
   version "2.1.1"
