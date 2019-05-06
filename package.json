@@ -23,7 +23,7 @@
     "react-dom": "^16.4.0",
     "react-redux": "7.0.3",
     "react-textarea-autosize": "^7.1.0",
-    "redux": "3.6.0",
+    "redux": "4.0.1",
     "redux-saga": "^1.0.2",
     "typeface-roboto": "^0.0.54"
   },
