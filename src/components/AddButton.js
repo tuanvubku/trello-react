@@ -28,11 +28,11 @@ class AddButton extends Component {
     });
   };
 
-  handleInputChange(e) {
+  handleInputChange = e => {
     this.setState({
       text: e.target.value
     });
-  }
+  };
 
   handleAddList = () => {
     const { text } = this.state;

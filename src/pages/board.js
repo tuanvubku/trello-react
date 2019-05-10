@@ -11,6 +11,7 @@ import ProtectedView from '@/components/ProtectedView';
 import BasicLayout from '@/layouts/basic';
 
 import List from '@/components/List';
+import CardDetail from '@/components/CardDetail';
 import AddButton from '@/components/AddButton';
 
 @connect(({ board, list }) => ({
@@ -26,6 +27,7 @@ class Board extends React.Component {
         id: boardId
       }
     });
+    dispatch.user.fetchCurrentUser();
   }
 
   render() {
@@ -53,6 +55,7 @@ class Board extends React.Component {
             />
           ))}
           <AddButton list />
+          <CardDetail />
         </div>
       </div>
     );

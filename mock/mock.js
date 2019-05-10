@@ -7,6 +7,8 @@ const { userEndpoint } = require('./User');
 const { boardEndpoint } = require('./Board');
 const { listEndpoint } = require('./List');
 const { cardEndpoint } = require('./Card');
+const { commentEndpoint } = require('./Comment');
+const { logCardEndpoint } = require('./LogCard');
 
 const app = express();
 const PORT = process.env.MOCK_PORT || 3001;
@@ -55,6 +57,8 @@ app.use('/api/user', userEndpoint);
 app.use('/api/board', boardEndpoint);
 app.use('/api/list', listEndpoint);
 app.use('/api/card', cardEndpoint);
+app.use('/api/comment', commentEndpoint);
+app.use('/api/logCard', logCardEndpoint);
 
 app.use((err, req, res, next) => {
   res.send({
