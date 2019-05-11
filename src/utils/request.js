@@ -10,6 +10,16 @@ const METHOD = {
   PATCH: 'patch'
 };
 
+const API_PATH = {
+  USER: '/api/users',
+  AUTH: '/api/auth',
+  BOARD: '/api/boards',
+  CARD: '/api/cards',
+  LIST: '/api/lists',
+  LOGCARD: '/api/logCards',
+  COMMENT: '/api/comments'
+};
+
 const codeMessage = {
   200: 'Success',
   201: '',
@@ -108,3 +118,4 @@ const request = (endpoint, { method, data = {}, params = {} }) => {
 
 export default request;
 export { METHOD };
+export { API_PATH };

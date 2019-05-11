@@ -36,13 +36,18 @@ class AddButton extends Component {
 
   handleAddList = () => {
     const { text } = this.state;
-    // const { dispatch } = this.props;
+    const { dispatch } = this.props;
     if (text) {
       console.log('add list button pressed');
-      // dispatch(addList(text));
-      // this.setState({
-      //   text: ''
-      // });
+      dispatch({
+        type: 'list/addList',
+        payload: {
+          listTitle: text
+        }
+      });
+      this.setState({
+        text: ''
+      });
     }
   };
 
