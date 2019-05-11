@@ -41,15 +41,15 @@ class AddButton extends Component {
     const {text} = this.state;
     if (text) {
       console.log('add list button pressed');
-    const {dispatch, currentUser, boardInfo} = this.props;
-    dispatch({
-      type: 'list/addListRequest',
-      payload: {
-        name: text,
-        ownerId: currentUser._id,
-        boardId: boardInfo._id
-      }
-    });
+      const { dispatch, currentUser, boardInfo } = this.props;
+      dispatch({
+        type: 'list/addListRequest',
+        payload: {
+          listTitle: text,
+          ownerId: currentUser._id,
+          boardId: boardInfo._id
+        }
+      });
       // dispatch(addList(text));
       this.setState({
         text: ''

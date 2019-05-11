@@ -1,6 +1,6 @@
-import { call, put } from 'redux-saga/effects';
+import { select, call, put } from 'redux-saga/effects';
 
-import { fetchListOfBoard, addListRequest } from '@/services/list';
+import { fetchListOfBoard, addListOfBoard } from '@/services/list';
 
 export const list = {
   state: {
@@ -50,11 +50,10 @@ export const list = {
       // });
     },
 
-    *addListRequest({name, ownerId, boardId}){
-      console.log("add List request model: ",name);
-      const {list} = yield call(addListRequest,{
+    *addListRequest({listTitle, ownerId, boardId}) {
+      const {list} = yield call(addListOfBoard,{
         data: {
-          name,
+          listTitle,
           ownerId,
           boardId
         }

@@ -1,9 +1,10 @@
-import request, { METHOD } from '@/utils/request';
+import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET } = METHOD;
+const { BOARD } = API_PATH;
 
 export const fetchBoard = async ({ query }) => {
-  return request(`/api/board/${query}`, {
+  return request(`${BOARD}/${query}`, {
     method: GET
   });
 };

@@ -1,48 +1,49 @@
-import request, { METHOD } from '@/utils/request';
+import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET, POST, DELETE } = METHOD;
+const { CARD } = API_PATH;
 
 export const fetchCardOfListFromBoard = async ({ params }) => {
-  return request(`/api/card/`, {
+  return request(`${CARD}/`, {
     method: GET,
     params
   });
 };
 export const editCardRequest = async ({ data }) => {
-  return request(`/api/card/edit`, {
+  return request(`${CARD}/edit`, {
     method: POST,
     data: data.body
   });
 };
 export const deleteLabelCardRequest = async ({ data }) => {
-  return request(`/api/card/remove-label`, {
+  return request(`${CARD}/remove-label`, {
     method: POST, // Post !!!!
     data: data.body
   });
 };
 export const addMemberRequest = async ({ data }) => {
-  return request(`/api/card/add-member`, {
+  return request(`${CARD}/add-member`, {
     method: POST,
     data: data.body
   });
 };
 
 export const removeMemberRequest = async ({ data }) => {
-  return request(`/api/card/remove-member`, {
+  return request(`${CARD}/remove-member`, {
     method: POST,
     data: data.body
   });
 };
 
 export const moveCardRequest = async ({ data }) => {
-  return request(`/api/card/move`, {
+  return request(`${CARD}/move`, {
     method: POST,
     data: data.body
   });
 };
 
 export const deleteCardRequest = async ({ params, data }) => {
-  return request(`/api/card/${params._id}`, {
+  return request(`${CARD}/${params._id}`, {
     method: DELETE,
     data: data.body
   });

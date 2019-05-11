@@ -1,22 +1,23 @@
-import request, { METHOD } from '@/utils/request';
+import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET, POST } = METHOD;
+const { COMMENT } = API_PATH;
 
 export const fetchCommentOfCard = async ({ params }) => {
-  return request(`/api/comment/`, {
+  return request(`${COMMENT}/`, {
     method: GET,
     params
   });
 };
 export const editCommentRequest = async ({ data }) => {
-  return request(`/api/comment/edit`, {
+  return request(`${COMMENT}/edit`, {
     method: POST,
     data: data.body
   });
 };
 
 export const addCommentRequest = async ({ data }) => {
-  return request(`/api/comment/add`, {
+  return request(`${COMMENT}/add`, {
     method: POST,
     data: data.body
   });

@@ -216,7 +216,7 @@ class DialogForm extends React.Component {
     dispatch({
       type: 'card/deleteCardRequest',
       payload: { _id: currentCard._id, body }
-    }); 
+    });
     this.props.onClose(null); // close sub form
     dispatch({
       type: 'card/toggleModal', // toggle modal detail card
