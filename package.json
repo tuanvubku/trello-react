@@ -13,6 +13,7 @@
     "axios": "^0.18.0",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.0",
+    "core-js": "^3.0.1",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "date-fns": "^2.0.0-alpha.27",

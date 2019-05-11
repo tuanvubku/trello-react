@@ -462,3 +462,6 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/node,vim,visualstudio,visualstudiocode
+
+.tern-port
+public/
