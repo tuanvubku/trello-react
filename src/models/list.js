@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects';
+import { select, call, put } from 'redux-saga/effects';
 
 import { fetchListOfBoard } from '@/services/list';
 
@@ -41,6 +41,20 @@ export const list = {
       // const { list } = yield call(fetchListInfo, {
       // query: id
       // });
+    },
+    *addList({ listTitle }) {
+      // const { _id: boardId } = yield select(({ board }) => board.boardInfo);
+      const {
+        board: {
+          boardInfo: { _id: boardId }
+        },
+        user: {
+          user: { _id: userId }
+        }
+      } = yield select();
+      console.log(
+        `User #${userId} add new list '${listTitle}' to board #${boardId}`
+      );
     }
   }
 };

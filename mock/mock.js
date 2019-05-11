@@ -53,12 +53,12 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/auth', authEndpoint);
-app.use('/api/user', userEndpoint);
-app.use('/api/board', boardEndpoint);
-app.use('/api/list', listEndpoint);
-app.use('/api/card', cardEndpoint);
-app.use('/api/comment', commentEndpoint);
-app.use('/api/logCard', logCardEndpoint);
+app.use('/api/users', userEndpoint);
+app.use('/api/boards', boardEndpoint);
+app.use('/api/lists', listEndpoint);
+app.use('/api/cards', cardEndpoint);
+app.use('/api/comments', commentEndpoint);
+app.use('/api/logCards', logCardEndpoint);
 
 app.use((err, req, res, next) => {
   res.send({

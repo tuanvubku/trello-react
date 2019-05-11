@@ -29,7 +29,8 @@ const styles = {
   user: user.user,
   role: user.role,
   board: user.board,
-  userLoading: loading.effects.user.fetchCurrent
+  fetchStatus: user.status
+  // userLoading: loading.effects.user.fetchCurrent
 }))
 @withStyles(styles)
 class Index extends React.Component {
@@ -52,18 +53,13 @@ class Index extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch.user.fetchCurrentUser();
-    dispatch.user.fetchUserBoard();
-    // dispatch({
-    //   type: 'user/fetchCurrent',
-    //   payload: {}
-    // });
   }
 
   render() {
-    const { userLoading, user = {}, role = [], board = [] } = this.props;
+    const { fetchStatus, user = {}, role = [], board = [] } = this.props;
     let userInfo;
 
-    if (userLoading) return 'Loading...';
+    if (!user && fetchStatus === undefined) return 'Loading...';
 
     if (user.username) {
       userInfo = (
@@ -94,7 +90,7 @@ class Index extends React.Component {
             background,
             dateCreated,
             list,
-            member,
+            members,
             name,
             modelView,
             ownerId
@@ -114,7 +110,7 @@ class Index extends React.Component {
                     {name}
                   </Typography>
                   <Typography component="p">
-                    Member: {member.map(m => `${m} `)}
+                    Member: {members.map(m => `${m} `)}
                   </Typography>
                   <Typography component="p">{dateCreated}</Typography>
                   <Typography component="p">{modelView}</Typography>
