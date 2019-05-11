@@ -17,7 +17,7 @@
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
     "date-fns": "^2.0.0-alpha.27",
-    "dotenv": "^7.0.0",
+    "dotenv": "^8.0.0",
     "downshift": "^3.2.10",
     "express": "^4.16.4",
     "gatsby": "^2.0.0",
