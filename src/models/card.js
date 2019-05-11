@@ -46,9 +46,16 @@ export const card = {
       };
     },
     putCurrentCard(state, { card }) {
+      const { listId, ...cardInfo } = card;
       return {
         ...state,
-        currentCard: card
+        currentCard: card,
+        cards: {
+          ...state.cards,
+          [listId]: state.cards[listId].map(x =>
+            x._id === cardInfo._id ? cardInfo : x
+          )
+        }
       };
     },
 
@@ -93,7 +100,7 @@ export const card = {
       });
     },
     *editCardRequest({ body }) {
-      console.log(`editting card request  `);
+      console.log(`editting card request`);
       const { card } = yield call(editCardRequest, {
         data: { body }
       });
