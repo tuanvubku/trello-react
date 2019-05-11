@@ -49,10 +49,10 @@ export const deleteCardRequest = async ({ params, data }) => {
   });
 };
 
-export const addCardRequest = async ({data}) => {
+export const addCardRequest = async ({ data }) => {
   console.log(data);
-  return request(`/api/card/add`, {
+  return request(`${CARD}/add`, {
     method: POST,
     data
   });
-}
+};

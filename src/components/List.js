@@ -9,14 +9,14 @@ import AddButton from '@/components/AddButton';
 }))
 class List extends React.Component {
   componentDidMount() {
-    const { dispatch, idList, idBoard } = this.props;
-    dispatch({
-      type: 'card/fetchCardOfListFromBoard',
-      payload: {
-        boardId: idBoard,
-        listId: idList
-      }
-    });
+    // const { dispatch, idList, idBoard } = this.props;
+    // dispatch({
+    //   type: 'card/fetchCardOfListFromBoard',
+    //   payload: {
+    //     boardId: idBoard,
+    //     listId: idList
+    //   }
+    // });
   }
 
   render() {

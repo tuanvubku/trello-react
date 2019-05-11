@@ -1,7 +1,7 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET, POST } = METHOD;
-const { LIST } = API_PATH;
+const { BOARD, LIST } = API_PATH;
 
 export const fetchListInfo = async ({ query }) => {
   return request(`${LIST}/${query}`, {
@@ -9,10 +9,9 @@ export const fetchListInfo = async ({ query }) => {
   });
 };
 
-export const fetchListOfBoard = async ({ params }) => {
-  return request(`${LIST}/`, {
-    method: GET,
-    params
+export const fetchListOfBoard = async ({ query }) => {
+  return request(`${BOARD}/${query}/lists`, {
+    method: GET
   });
 };
 

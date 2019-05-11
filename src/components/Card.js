@@ -38,8 +38,14 @@ class TrelloCard extends React.Component {
     };
 
     const { card } = this.props;
-    console.log(card)
-    const { title = '', members = [], comments = [], labels = [], archived = false } = card;
+    console.log(card);
+    const {
+      title = '',
+      members = [],
+      comments = [],
+      labels = [],
+      archived = false
+    } = card;
     return (
       <Card style={styles.cardContainer} onClick={this.onClick}>
         <CardContent>

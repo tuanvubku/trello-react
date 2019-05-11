@@ -15,7 +15,7 @@ export const board = {
       const { board } = yield call(fetchBoard, { query: id });
       yield put({
         type: 'board/set',
-        payload: { boardInfo: board }
+        payload: { boardInfo: board[0] }
       });
       yield put({
         type: 'list/fetchListOfBoard',

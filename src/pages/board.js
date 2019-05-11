@@ -39,9 +39,9 @@ class Board extends React.Component {
     };
 
     const { boardInfo = {}, lists = [] } = this.props;
-    console.log(lists)
     const { name: title = '', _id: boardId } = boardInfo;
 
+    // console.log(lists);
     return (
       <div>
         <h2>{title}</h2>

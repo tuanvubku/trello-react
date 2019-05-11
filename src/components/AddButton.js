@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 // import addList from '../../action/listAction'
 // import addCard from '../../action/cardAction'
 
-@connect(({ user,board }) => ({
+@connect(({ user, board }) => ({
   currentUser: user.user,
   boardInfo: board.boardInfo
 }))
@@ -38,14 +38,14 @@ class AddButton extends Component {
   };
 
   handleAddList = () => {
-    const {text} = this.state;
+    const { text } = this.state;
     if (text) {
       console.log('add list button pressed');
       const { dispatch, currentUser, boardInfo } = this.props;
       dispatch({
         type: 'list/addListRequest',
         payload: {
-          listTitle: text,
+          name: text,
           ownerId: currentUser._id,
           boardId: boardInfo._id
         }
@@ -64,16 +64,16 @@ class AddButton extends Component {
       console.log('add card button pressed');
       const { dispatch, idList, currentUser } = this.props;
       dispatch({
-        type:'card/addCardRequest',
-        payload:{
-            title: text,
-            ownerId: currentUser._id,
-            listId: idList
+        type: 'card/addCardRequest',
+        payload: {
+          title: text,
+          ownerId: currentUser._id,
+          listId: idList
         }
-      })
+      });
       // dispatch(addCard(text, idList));
       this.setState({
-      text: ''
+        text: ''
       });
     }
   };

@@ -19,8 +19,8 @@ export const card = {
     currentCard: {}
   },
   reducers: {
-    putListCard(state, {card}){
-      console.log(card)
+    putListCard(state, { card }) {
+      console.log(card);
       // let newState = Object.assign({}, state);
       // for(let card_ in newState.cards){
       //   if(card.listId == card_){
@@ -34,7 +34,7 @@ export const card = {
           ...state.cards,
           [listId]: [...state.cards[card.listId], card]
         }
-      }
+      };
     },
     put(state, { listId, cardInfo }) {
       return {
@@ -51,7 +51,7 @@ export const card = {
         currentCard: card
       };
     },
-    
+
     toggleModal(state, { card }) {
       //  toggle detail card form
       return {
@@ -65,6 +65,13 @@ export const card = {
       return {
         ...state,
         subForm: { open, kind }
+      };
+    },
+    fromList(state, { cardItems }) {
+      console.log(cardItems);
+      return {
+        ...state,
+        cards: cardItems
       };
     }
   },
@@ -157,9 +164,9 @@ export const card = {
       });
     },
 
-    *addCardRequest({title, ownerId, listId}){
+    *addCardRequest({ title, ownerId, listId }) {
       console.log(`add card`);
-      const { card } = yield call(addCardRequest,{
+      const { card } = yield call(addCardRequest, {
         data: {
           title,
           ownerId,
@@ -172,9 +179,7 @@ export const card = {
         payload: {
           card
         }
-      })
-      
+      });
     }
-
   }
 };
