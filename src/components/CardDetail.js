@@ -299,20 +299,21 @@ class CardDetail extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    var { dispatch, currentCard, boardInfo } = this.props;
+    var { dispatch } = this.props;
     dispatch({
       type: 'card/toggleModal', // toggle modal detail card
       payload: {}
     });
+    // update is done on save
     // after close detail modal => update card of list
-    dispatch({
-      // reload list
-      type: 'card/fetchCardOfListFromBoard',
-      payload: {
-        boardId: boardInfo._id,
-        listId: currentCard.listId
-      }
-    });
+    // dispatch({
+    //   // reload list
+    //   type: 'card/fetchCardOfListFromBoard',
+    //   payload: {
+    //     boardId: boardInfo._id,
+    //     listId: currentCard.listId
+    //   }
+    // });
   };
   formEdit = (name, value) => {
     const { classes } = this.props;
@@ -453,6 +454,13 @@ class CardDetail extends React.Component {
                     Thành viên
                   </Typography>
                   {members.map(mem => {
+                    // TODO: Fetch member info from id
+                    // members is not fetched, populated from id
+                    mem = {
+                      username: mem,
+                      imageUrl:
+                        'https://i2.wp.com/www.bemanistyle.com/wp-content/uploads/2018/01/Linux-Avatar-300px.png?fit=300%2C300&ssl=1'
+                    };
                     return (
                       <PopupState variant="popover" key={mem.username}>
                         {popupState => (

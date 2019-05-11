@@ -9,7 +9,10 @@ import Button from '@material-ui/core/Button';
 // import addList from '../../action/listAction'
 // import addCard from '../../action/cardAction'
 
-@connect(state => ({}))
+@connect(({ user, board }) => ({
+  currentUser: user.user,
+  boardInfo: board.boardInfo
+}))
 class AddButton extends Component {
   state = {
     formOpen: false,
@@ -36,15 +39,18 @@ class AddButton extends Component {
 
   handleAddList = () => {
     const { text } = this.state;
-    const { dispatch } = this.props;
     if (text) {
       console.log('add list button pressed');
+      const { dispatch, currentUser, boardInfo } = this.props;
       dispatch({
-        type: 'list/addList',
+        type: 'list/addListRequest',
         payload: {
-          listTitle: text
+          name: text,
+          ownerId: currentUser._id,
+          boardId: boardInfo._id
         }
       });
+      // dispatch(addList(text));
       this.setState({
         text: ''
       });
@@ -56,10 +62,19 @@ class AddButton extends Component {
     // const { dispatch, idList } = this.props;
     if (text) {
       console.log('add card button pressed');
+      const { dispatch, idList, currentUser } = this.props;
+      dispatch({
+        type: 'card/addCardRequest',
+        payload: {
+          title: text,
+          ownerId: currentUser._id,
+          listId: idList
+        }
+      });
       // dispatch(addCard(text, idList));
-      // this.setState({
-      // text: ''
-      // });
+      this.setState({
+        text: ''
+      });
     }
   };
 

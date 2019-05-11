@@ -7,7 +7,8 @@ import {
   removeMemberRequest,
   addMemberRequest,
   deleteCardRequest,
-  deleteLabelCardRequest
+  deleteLabelCardRequest,
+  addCardRequest
 } from '@/services/card';
 
 export const card = {
@@ -18,6 +19,23 @@ export const card = {
     currentCard: {}
   },
   reducers: {
+    putListCard(state, { card }) {
+      console.log(card);
+      // let newState = Object.assign({}, state);
+      // for(let card_ in newState.cards){
+      //   if(card.listId == card_){
+      //     newState.cards[card_].push(card);
+      //   }
+      // }
+      const { listId } = card;
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          [listId]: [...state.cards[card.listId], card]
+        }
+      };
+    },
     put(state, { listId, cardInfo }) {
       return {
         ...state,
@@ -28,11 +46,19 @@ export const card = {
       };
     },
     putCurrentCard(state, { card }) {
+      const { listId, ...cardInfo } = card;
       return {
         ...state,
-        currentCard: card
+        currentCard: card,
+        cards: {
+          ...state.cards,
+          [listId]: state.cards[listId].map(x =>
+            x._id === cardInfo._id ? cardInfo : x
+          )
+        }
       };
     },
+
     toggleModal(state, { card }) {
       //  toggle detail card form
       return {
@@ -46,6 +72,13 @@ export const card = {
       return {
         ...state,
         subForm: { open, kind }
+      };
+    },
+    fromList(state, { cardItems }) {
+      console.log(cardItems);
+      return {
+        ...state,
+        cards: cardItems
       };
     }
   },
@@ -67,7 +100,7 @@ export const card = {
       });
     },
     *editCardRequest({ body }) {
-      console.log(`editting card request  `);
+      console.log(`editting card request`);
       const { card } = yield call(editCardRequest, {
         data: { body }
       });
@@ -124,6 +157,7 @@ export const card = {
         data: { body }
       });
     },
+
     *deleteLabelCardRequest({ body }) {
       console.log(`delete label card   `);
       const { card } = yield call(deleteLabelCardRequest, {
@@ -131,6 +165,24 @@ export const card = {
       });
       yield put({
         type: 'card/putCurrentCard',
+        payload: {
+          card
+        }
+      });
+    },
+
+    *addCardRequest({ title, ownerId, listId }) {
+      console.log(`add card`);
+      const { card } = yield call(addCardRequest, {
+        data: {
+          title,
+          ownerId,
+          listId
+        }
+      });
+      console.log(card);
+      yield put({
+        type: 'card/putListCard',
         payload: {
           card
         }

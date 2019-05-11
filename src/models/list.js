@@ -1,60 +1,69 @@
-import { select, call, put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 
-import { fetchListOfBoard } from '@/services/list';
+import { fetchListOfBoard, addListOfBoard } from '@/services/list';
 
 export const list = {
   state: {
     lists: []
   },
   reducers: {
+    putList(state, { list }) {
+      console.log('list model: ', list);
+      return {
+        lists: [...state.lists, list]
+      };
+    },
     set(state, { lists }) {
+      // console.log(lists);
       return { ...state, lists };
     }
   },
   effects: {
     *fetchListOfBoard({ boardId }) {
       console.log(`Fetching list of board #${boardId}`);
-      const { list } = yield call(fetchListOfBoard, {
-        params: { board: boardId }
+      const { lists: rawLists } = yield call(fetchListOfBoard, {
+        query: boardId
       });
+
+      const cardItems = rawLists.reduce(
+        (items, val) => ({
+          ...items,
+          [val._id]: val.cards
+        }),
+        {}
+      );
+      const lists = rawLists.map(({ cards, ...x }) => x);
+
+      // console.log(lists);
+      // console.log(cardItems);
+
       yield put({
         type: 'list/set',
         payload: {
-          lists: list
+          lists
+        }
+      });
+      yield put({
+        type: 'card/fromList',
+        payload: { cardItems }
+      });
+    },
+    *addListRequest({ name, ownerId, boardId }) {
+      console.log(boardId);
+      const { list } = yield call(addListOfBoard, {
+        data: {
+          name,
+          ownerId,
+          boardId
         }
       });
 
-      // yield all(
-      //   list.map(({ _id: listId }) =>
-      //     put({
-      //       type: 'card/fetchCardOfListFromBoard',
-      //       payload: {
-      //         boardId,
-      //         listId
-      //       }
-      //     })
-      //   )
-      // );
-    },
-    *fetchListInfo({ id }) {
-      console.log(`Fetching list #${id}`);
-      // const { list } = yield call(fetchListInfo, {
-      // query: id
-      // });
-    },
-    *addList({ listTitle }) {
-      // const { _id: boardId } = yield select(({ board }) => board.boardInfo);
-      const {
-        board: {
-          boardInfo: { _id: boardId }
-        },
-        user: {
-          user: { _id: userId }
+      yield put({
+        type: 'list/putList',
+        payload: {
+          list
         }
-      } = yield select();
-      console.log(
-        `User #${userId} add new list '${listTitle}' to board #${boardId}`
-      );
+      });
     }
   }
 };
