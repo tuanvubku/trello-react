@@ -7,7 +7,8 @@ import {
   removeMemberRequest,
   addMemberRequest,
   deleteCardRequest,
-  deleteLabelCardRequest
+  deleteLabelCardRequest,
+  addCardRequest
 } from '@/services/card';
 
 export const card = {
@@ -18,6 +19,23 @@ export const card = {
     currentCard: {}
   },
   reducers: {
+    putListCard(state, {card}){
+      console.log(card)
+      // let newState = Object.assign({}, state);
+      // for(let card_ in newState.cards){
+      //   if(card.listId == card_){
+      //     newState.cards[card_].push(card);
+      //   }
+      // }
+      const { listId } = card;
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          [listId]: [...state.cards[card.listId], card]
+        }
+      }
+    },
     put(state, { listId, cardInfo }) {
       return {
         ...state,
@@ -33,6 +51,7 @@ export const card = {
         currentCard: card
       };
     },
+    
     toggleModal(state, { card }) {
       //  toggle detail card form
       return {
@@ -124,6 +143,7 @@ export const card = {
         data: { body }
       });
     },
+
     *deleteLabelCardRequest({ body }) {
       console.log(`delete label card   `);
       const { card } = yield call(deleteLabelCardRequest, {
@@ -135,6 +155,26 @@ export const card = {
           card
         }
       });
+    },
+
+    *addCardRequest({title, ownerId, listId}){
+      console.log(`add card`);
+      const { card } = yield call(addCardRequest,{
+        data: {
+          title,
+          ownerId,
+          listId
+        }
+      });
+      console.log(card);
+      yield put({
+        type: 'card/putListCard',
+        payload: {
+          card
+        }
+      })
+      
     }
+
   }
 };

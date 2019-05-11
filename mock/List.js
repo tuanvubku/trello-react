@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment');
 
+
 const sampleLists = [
   {
     _id: 1,
@@ -66,6 +67,29 @@ router.post('/', (req, res) => {
     list: newList
   });
 });
+
+
+router.post('/add',(req,res) => {
+  sampleLists.push({
+    _id: 4,
+    name: req.body.name,
+    ownerId: req.body.ownerId,
+    boardId: req.body.boardId
+  })
+
+  res.send({
+    status: "Ok",
+    list: {
+      _id: 4,
+      name: req.body.name,
+      ownerId: req.body.ownerId,
+      boardId: req.body.boardId
+    }
+  })
+})
+
+  
+
 
 module.exports = {
   listEndpoint: router,

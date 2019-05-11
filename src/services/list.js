@@ -1,6 +1,6 @@
 import request, { METHOD } from '@/utils/request';
 
-const { GET } = METHOD;
+const { GET,POST } = METHOD;
 
 export const fetchListInfo = async ({ query }) => {
   return request(`/api/list/${query}`, {
@@ -14,3 +14,11 @@ export const fetchListOfBoard = async ({ params }) => {
     params
   });
 };
+
+export const addListRequest = async ({data}) => {
+  console.log("List service: ", data);
+  return request(`/api/list/add`,{
+    method: POST,
+    data
+  });
+}

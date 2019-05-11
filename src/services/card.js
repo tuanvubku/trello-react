@@ -47,3 +47,11 @@ export const deleteCardRequest = async ({ params, data }) => {
     data: data.body
   });
 };
+
+export const addCardRequest = async ({data}) => {
+  console.log(data);
+  return request(`/api/card/add`, {
+    method: POST,
+    data
+  });
+}

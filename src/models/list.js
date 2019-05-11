@@ -1,13 +1,20 @@
 import { call, put } from 'redux-saga/effects';
 
-import { fetchListOfBoard } from '@/services/list';
+import { fetchListOfBoard, addListRequest } from '@/services/list';
 
 export const list = {
   state: {
     lists: []
   },
   reducers: {
+    putList(state, {list}){
+      console.log("list model: ",list);
+      return {
+        lists: [...state.lists,list]
+      }
+    },
     set(state, { lists }) {
+      console.log(lists)
       return { ...state, lists };
     }
   },
@@ -41,6 +48,25 @@ export const list = {
       // const { list } = yield call(fetchListInfo, {
       // query: id
       // });
+    },
+
+    *addListRequest({name, ownerId, boardId}){
+      console.log("add List request model: ",name);
+      const {list} = yield call(addListRequest,{
+        data: {
+          name,
+          ownerId,
+          boardId
+        }
+      });
+
+      yield put({
+        type: 'list/putList',
+        payload: {
+          list
+        }
+      })
     }
+
   }
 };
