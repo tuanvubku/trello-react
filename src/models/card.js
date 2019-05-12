@@ -8,7 +8,8 @@ import {
   addMemberRequest,
   deleteCardRequest,
   deleteLabelCardRequest,
-  addCardRequest
+  addCardRequest,
+  getCardRequest
 } from '@/services/card';
 
 export const card = {
@@ -20,7 +21,7 @@ export const card = {
   },
   reducers: {
     putListCard(state, { card }) {
-      console.log(card);
+      // console.log(card);
       // let newState = Object.assign({}, state);
       // for(let card_ in newState.cards){
       //   if(card.listId == card_){
@@ -75,7 +76,7 @@ export const card = {
       };
     },
     fromList(state, { cardItems }) {
-      console.log(cardItems);
+      // console.log(cardItems);
       return {
         ...state,
         cards: cardItems
@@ -104,6 +105,7 @@ export const card = {
       const { card } = yield call(editCardRequest, {
         data: { body }
       });
+      console.log(card);
       yield put({
         type: 'card/putCurrentCard',
         payload: {
@@ -112,7 +114,7 @@ export const card = {
       });
     },
     *addMemberRequest({ body }) {
-      console.log(`add member card request  `);
+      console.log(`add member card request`);
       const { card } = yield call(addMemberRequest, {
         data: { body }
       });
@@ -124,7 +126,7 @@ export const card = {
       });
     },
     *removeMemberRequest({ body }) {
-      console.log(`remove member card request  `);
+      console.log(`remove member card request`);
       const { card } = yield call(removeMemberRequest, {
         data: { body }
       });
@@ -136,7 +138,7 @@ export const card = {
       });
     },
     *moveCardRequest({ body }) {
-      console.log(`move card request  `);
+      console.log(`move card request`);
       const { card } = yield call(moveCardRequest, {
         data: { body }
       });
@@ -183,6 +185,17 @@ export const card = {
       console.log(card);
       yield put({
         type: 'card/putListCard',
+        payload: {
+          card
+        }
+      });
+    },
+    *getCardRequest({ _id }) {
+      // get card info
+      console.log(`get card request  `);
+      const { card } = yield call(getCardRequest, { query: _id });
+      yield put({
+        type: 'card/toggleModal',
         payload: {
           card
         }

@@ -8,25 +8,23 @@ export const logCard = {
     currentLogCard: {}
   },
   reducers: {
-    put(state, { logCard }) {
+    put(state, { logCards }) {
       return {
         ...state,
-        logCards: logCard
+        logCards: logCards
       };
     }
   },
   effects: {
     *fetchLogOfCard({ cardId }) {
       console.log(`Fetching log  of card #${cardId} `);
-      const { logCard } = yield call(fetchLogOfCard, {
-        params: {
-          cardId
-        }
+      const { logCards } = yield call(fetchLogOfCard, {
+        query: `${cardId}/logCards`
       });
       yield put({
         type: 'logCard/put',
         payload: {
-          logCard
+          logCards
         }
       });
     }

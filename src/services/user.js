@@ -21,3 +21,9 @@ export const fetchUserBoard = async ({ query }) => {
     method: GET
   });
 };
+
+export const fetchAllUsername = async () => {
+  return request(`${USER}/usernames`, {
+    method: GET
+  });
+};

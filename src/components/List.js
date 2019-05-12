@@ -8,15 +8,12 @@ import AddButton from '@/components/AddButton';
   globalCards: card.cards
 }))
 class List extends React.Component {
-  componentDidMount() {
-    // const { dispatch, idList, idBoard } = this.props;
-    // dispatch({
-    //   type: 'card/fetchCardOfListFromBoard',
-    //   payload: {
-    //     boardId: idBoard,
-    //     listId: idList
-    //   }
-    // });
+  state = {
+    globalCards: []
+  };
+
+  componentWillReceiveProps(props) {
+    this.setState({ globalCards: props.globalCards });
   }
 
   render() {
@@ -36,7 +33,7 @@ class List extends React.Component {
     };
 
     const { title, idList } = this.props;
-    const { globalCards } = this.props;
+    const { globalCards } = this.state;
     const cards = globalCards[idList] ? globalCards[idList] : [];
 
     return (

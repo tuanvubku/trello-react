@@ -159,8 +159,8 @@ const customStyle = {
   },
   title: {
     fontWeight: 'bold',
-    fortSize: 30,
-    color: 'brown'
+    fortSize: 30
+    // color: 'brown'
   },
   saveBtn: {
     color: 'white',
@@ -205,6 +205,7 @@ class CardDetail extends React.Component {
     memberName: '' // member name is clicked avatar
   };
   componentWillReceiveProps(nextProps) {
+    // console.log(nextProps);
     if (nextProps.currentCard) {
       var {
         description,
@@ -216,7 +217,9 @@ class CardDetail extends React.Component {
         dateCreated,
         ownerId,
         archived,
-        members
+        members,
+        comments,
+        logCards
       } = nextProps.currentCard;
       this.setState({
         open: nextProps.showDetail,
@@ -229,7 +232,9 @@ class CardDetail extends React.Component {
         _id,
         ownerId,
         archived,
-        members
+        members,
+        comments,
+        logCards
       });
     } else this.setState({ open: nextProps.showDetail });
   }
@@ -286,34 +291,28 @@ class CardDetail extends React.Component {
       ownerId: currentUser._id,
       fileUrl: ''
     };
-    dispatch({
-      type: 'comment/addCommentRequest',
-      payload: { body: comment }
-    });
-    dispatch({
-      type: 'comment/fetchCommentOfCard',
-      payload: { cardId: currentCard._id }
-    });
+    (async () => {
+      await dispatch({
+        type: 'comment/addCommentRequest',
+        payload: { body: comment }
+      });
+      dispatch({
+        // why it delay ?
+        type: 'comment/fetchCommentOfCard',
+        payload: { cardId: currentCard._id }
+      });
+    })();
+
     this.setState({ commentText: '' });
   };
 
   handleClose = () => {
     this.setState({ open: false });
-    var { dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'card/toggleModal', // toggle modal detail card
       payload: {}
     });
-    // update is done on save
-    // after close detail modal => update card of list
-    // dispatch({
-    //   // reload list
-    //   type: 'card/fetchCardOfListFromBoard',
-    //   payload: {
-    //     boardId: boardInfo._id,
-    //     listId: currentCard.listId
-    //   }
-    // });
   };
   formEdit = (name, value) => {
     const { classes } = this.props;
@@ -415,10 +414,10 @@ class CardDetail extends React.Component {
           </DialogTitle>
           <DialogContent
             style={{ backgroundColor: '#d6d4cb' }}
-            container
+            container="true"
             spacing={24}
           >
-            <Grid container="true" spacing={8}>
+            <Grid container spacing={8}>
               <Grid item xs={9}>
                 <Typography
                   gutterBottom
@@ -457,7 +456,7 @@ class CardDetail extends React.Component {
                     // TODO: Fetch member info from id
                     // members is not fetched, populated from id
                     mem = {
-                      username: mem,
+                      ...mem,
                       imageUrl:
                         'https://i2.wp.com/www.bemanistyle.com/wp-content/uploads/2018/01/Linux-Avatar-300px.png?fit=300%2C300&ssl=1'
                     };
@@ -611,7 +610,7 @@ class CardDetail extends React.Component {
                     {' '}
                     access_time{' '}
                   </i>
-                  Deadline: {deadline}
+                  Deadline: {deadline === '' ? deadline : 'Chưa có deadline'}
                 </Typography>
                 <hr />
                 <Typography
@@ -628,11 +627,14 @@ class CardDetail extends React.Component {
                     onClick={() => this.setState({ isEditDescription: true })}
                     className="material-icons md-18"
                   >
-                    edit
+                    {' '}
+                    edit{' '}
                   </i>
                 </Typography>
 
-                <Typography gutterBottom>{description}</Typography>
+                <Typography gutterBottom>
+                  {description === '' ? description : 'Chưa có mô tả'}
+                </Typography>
 
                 {formEditDescription}
 
@@ -686,14 +688,17 @@ class CardDetail extends React.Component {
                   Các bình luận{' '}
                 </Typography>
 
-                {comments.map(({ content, cardId, _id }) => (
+                {comments.map(({ content, ownerId, cardId, _id }) => (
                   <Comment
                     content={content}
+                    username={ownerId.username}
+                    imageUrl={ownerId.imageUrl}
                     cardId={cardId}
                     key={_id}
                     _id={_id}
                   />
                 ))}
+
                 <Typography
                   gutterBottom
                   variant="subtitle1"
@@ -704,8 +709,14 @@ class CardDetail extends React.Component {
                   </i>{' '}
                   Hoạt động{' '}
                 </Typography>
-                {logCards.map(({ action, cardId, _id }) => (
-                  <LogCard action={action} cardId={cardId} key={_id} />
+                {logCards.map(({ action, cardId, _id, ownerId }) => (
+                  <LogCard
+                    action={action}
+                    cardId={cardId}
+                    key={_id}
+                    imageUrl={ownerId.imageUrl}
+                    username={ownerId.username}
+                  />
                 ))}
               </Grid>
               <Grid item xs={3}>
@@ -731,7 +742,6 @@ class CardDetail extends React.Component {
                     checked={archived}
                     name="archived"
                     onChange={this.handleInputChange}
-                    value={archived}
                   />
                   Đánh dấu hoàn tất
                 </Typography>

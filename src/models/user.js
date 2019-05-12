@@ -1,7 +1,12 @@
 import { navigate } from 'gatsby';
 import { delay, call, put } from 'redux-saga/effects';
 
-import { login, fetchCurrentUser, fetchUserBoard } from '@/services/user';
+import {
+  login,
+  fetchCurrentUser,
+  fetchUserBoard,
+  fetchAllUsername
+} from '@/services/user';
 import { setUser } from '@/utils/auth';
 import { LOGIN_OK } from '@/utils/return_messages';
 
@@ -10,7 +15,8 @@ export const user = {
     status: undefined,
     user: {},
     role: [],
-    board: []
+    board: [],
+    allUsername: [] // contain all username to use for add member form
   },
 
   reducers: {
@@ -24,6 +30,9 @@ export const user = {
     },
     myboard(state, { boards }) {
       return { ...state, board: boards };
+    },
+    setUsernames(state, { usernames }) {
+      return { ...state, allUsername: usernames };
     },
     clear(state) {
       setUser({});
@@ -87,6 +96,16 @@ export const user = {
     },
     *register(payload) {
       yield delay(2000);
+    },
+    *fetchAllUsername() {
+      // call api query all username in db
+      console.log('fetchUserMember');
+      const { usernames } = yield call(fetchAllUsername);
+      console.log(usernames);
+      yield put({
+        type: 'user/setUsernames',
+        payload: { usernames }
+      });
     }
   }
 };
