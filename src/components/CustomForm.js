@@ -257,6 +257,10 @@ class DialogForm extends React.Component {
       onClose,
       currentCard,
       selectedName,
+      // react warn for these when use other below
+      currentUser,
+      boardInfo,
+      dispatch,
       ...other
     } = this.props;
     const { deadline, totalCard } = this.state;
