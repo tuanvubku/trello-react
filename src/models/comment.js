@@ -34,7 +34,7 @@ export const comment = {
       const { comments } = yield call(fetchCommentOfCard, {
         query: cardId
       });
-      console.log(comments);
+      // console.log(comments);
       yield put({
         type: 'comment/put',
         payload: {

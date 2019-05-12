@@ -205,7 +205,7 @@ class CardDetail extends React.Component {
     memberName: '' // member name is clicked avatar
   };
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    // console.log(nextProps);
     if (nextProps.currentCard) {
       var {
         description,

@@ -21,7 +21,7 @@ export const card = {
   },
   reducers: {
     putListCard(state, { card }) {
-      console.log(card);
+      // console.log(card);
       // let newState = Object.assign({}, state);
       // for(let card_ in newState.cards){
       //   if(card.listId == card_){
@@ -76,7 +76,7 @@ export const card = {
       };
     },
     fromList(state, { cardItems }) {
-      console.log(cardItems);
+      // console.log(cardItems);
       return {
         ...state,
         cards: cardItems
