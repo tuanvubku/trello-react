@@ -24,7 +24,7 @@ import {
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
-
+// this form user for sub form in card detail
 const BootstrapInput = withStyles(theme => ({
   root: {
     'label + &': {

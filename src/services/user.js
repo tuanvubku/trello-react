@@ -10,6 +10,12 @@ export const login = async ({ data }) => {
   });
 };
 
+export const signUp = async ({ data }) => {
+  return request(`${AUTH}/register`, {
+    method: POST,
+    data
+  });
+};
 export const fetchCurrentUser = async () => {
   return request(`${AUTH}/me`, {
     method: GET
