@@ -34,9 +34,6 @@ export const list = {
       );
       const lists = rawLists.map(({ cards, ...x }) => x);
 
-      // console.log(lists);
-      // console.log(cardItems);
-
       yield put({
         type: 'list/set',
         payload: {

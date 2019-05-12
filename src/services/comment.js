@@ -1,12 +1,11 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET, POST } = METHOD;
-const { COMMENT } = API_PATH;
+const { COMMENT, CARD } = API_PATH;
 
-export const fetchCommentOfCard = async ({ params }) => {
-  return request(`${COMMENT}/`, {
-    method: GET,
-    params
+export const fetchCommentOfCard = async ({ query }) => {
+  return request(`${CARD}/${query}/comments`, {
+    method: GET
   });
 };
 export const editCommentRequest = async ({ data }) => {

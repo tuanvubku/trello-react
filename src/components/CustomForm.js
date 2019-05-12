@@ -127,7 +127,8 @@ const customStyle = {
   currentCard: card.currentCard,
   currentUser: user.user,
   lists: list.lists,
-  boardInfo: board.boardInfo
+  boardInfo: board.boardInfo,
+  cards: card.cards
 }))
 class DialogForm extends React.Component {
   constructor(props) {
@@ -148,15 +149,16 @@ class DialogForm extends React.Component {
   };
 
   handleChange = e => {
-    var { lists } = this.props;
+    var { lists, cards } = this.props;
     var name = e.target.name;
     var value = e.target.value;
     if (name === 'listId') {
       //  if select listId, count num of card
       for (var x of lists) {
-        if (x._id === value) this.setState({ totalCard: x.cards.length });
+        if (x._id === value) this.setState({ totalCard: cards[value].length });
       }
     }
+    console.log(value);
     this.setState({ [name]: value });
   };
 
@@ -195,7 +197,7 @@ class DialogForm extends React.Component {
     }
   }
   move = () => {
-    var { currentCard, dispatch, currentUser } = this.props;
+    var { currentCard, dispatch, currentUser, boardInfo } = this.props;
     var { order, listId } = this.state;
     if (order === null || listId === null) return false;
     var body = {
@@ -204,10 +206,22 @@ class DialogForm extends React.Component {
       newListId: listId,
       idUserMove: currentUser._id
     };
-    dispatch({
-      type: 'card/moveCardRequest',
-      payload: { body }
-    });
+    (async () => {
+      // because it be delay
+      await dispatch({
+        type: 'card/moveCardRequest',
+        payload: { body }
+      });
+
+      // update 2 list
+      dispatch({
+        type: 'list/fetchListOfBoard',
+        payload: {
+          boardId: boardInfo._id
+        }
+      });
+    })();
+
     this.props.onClose(null);
   };
   delete = () => {
@@ -222,12 +236,11 @@ class DialogForm extends React.Component {
       type: 'card/toggleModal', // toggle modal detail card
       payload: { card: null }
     });
+    // update   list
     dispatch({
-      // reload list
-      type: 'card/fetchCardOfListFromBoard',
+      type: 'list/fetchListOfBoard',
       payload: {
-        boardId: boardInfo._id,
-        listId: currentCard.listId
+        boardId: boardInfo._id
       }
     });
   };
@@ -469,13 +482,12 @@ class DialogForm extends React.Component {
             >
               {(function() {
                 var t = [];
-                for (var x = 1; x <= totalCard; x++) {
+                for (var x = 0; x <= totalCard; x++)
                   t.push(
                     <MenuItem key={x} value={x}>
                       {x}
                     </MenuItem>
                   );
-                }
                 return t;
               })()}
             </Select>
@@ -544,12 +556,7 @@ class DialogForm extends React.Component {
         {...other}
       >
         <DialogTitle id="simple-dialog-title">
-          <Typography
-            align="center"
-            color="brown"
-            variant="h6"
-            style={styles.title}
-          >
+          <Typography align="center" style={styles.title}>
             {title}
           </Typography>
         </DialogTitle>

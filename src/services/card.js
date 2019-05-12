@@ -56,3 +56,10 @@ export const addCardRequest = async ({ data }) => {
     data
   });
 };
+
+export const getCardRequest = async ({ query }) => {
+  return request(`${CARD}/${query}`, {
+    // query : /:_id
+    method: GET
+  });
+};

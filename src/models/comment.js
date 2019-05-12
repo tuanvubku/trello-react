@@ -11,33 +11,48 @@ export const comment = {
     comments: []
   },
   reducers: {
-    put(state, { comment }) {
+    put(state, { comments }) {
       return {
         ...state,
-        comments: comment
+        comments: comments
       };
+    },
+
+    putAfterEdit(state, { comment }) {
+      // edit req and then call this
+      var tem = [];
+      for (var x of state.comments) {
+        if (x._id === comment._id) tem.push(comment);
+        else tem.push(x);
+      }
+      return { ...state, comments: tem };
     }
   },
   effects: {
     *fetchCommentOfCard({ cardId }) {
       console.log(`Fetching comment of card #${cardId} `);
-      const { comment } = yield call(fetchCommentOfCard, {
-        params: {
-          cardId
-        }
+      const { comments } = yield call(fetchCommentOfCard, {
+        query: cardId
       });
+      console.log(comments);
       yield put({
         type: 'comment/put',
         payload: {
-          comment
+          comments
         }
       });
     },
     *editCommentRequest({ body }) {
       console.log(`edit comment req `);
-      yield call(editCommentRequest, {
+      var { comment } = yield call(editCommentRequest, {
         data: {
           body
+        }
+      });
+      yield put({
+        type: 'comment/putAfterEdit',
+        payload: {
+          comment
         }
       });
     },
