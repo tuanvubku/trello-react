@@ -20,6 +20,7 @@ export const list = {
   },
   effects: {
     *fetchListOfBoard({ boardId }) {
+      
       console.log(`Fetching list of board #${boardId}`);
       const { lists: rawLists } = yield call(fetchListOfBoard, {
         query: boardId

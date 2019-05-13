@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { navigate } from 'gatsby'; 
-import TextField from '@material-ui/core/TextField';
+import { navigate } from 'gatsby';  
 import Button from '@material-ui/core/Button';  
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar'; 
@@ -94,7 +93,7 @@ class Login extends React.Component {
   var {alertAccount }=this.state;
   console.log(alertAccount);
     return (<React.Fragment>
-      <Header></Header>
+      <Header/>
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>

@@ -139,9 +139,11 @@ export const card = {
     },
     *moveCardRequest({ body }) {
       console.log(`move card request`);
+      console.log(body)
       const { card } = yield call(moveCardRequest, {
         data: { body }
       });
+      console.log(card)
       yield put({
         type: 'card/putCurrentCard',
         payload: {

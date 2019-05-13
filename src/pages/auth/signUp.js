@@ -1,15 +1,12 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { navigate } from 'gatsby'; 
-import TextField from '@material-ui/core/TextField'; 
+import { navigate } from 'gatsby';  
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from '@material-ui/core/FormControl';  
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -79,8 +76,7 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.setState({ alertPassword:'',  alertUsername:'', alertEmail:'',})
     const { dispatch } = this.props;
-    const { username, password, email,repPassword } = this.state;
-    var body={username, password, email,repPassword}; 
+    const { username, password, email,repPassword } = this.state; 
     if(password!==repPassword)
     {
       this.setState({alertPassword:'Password not match'});
@@ -101,7 +97,7 @@ class SignUp extends React.Component {
   { var {classes}=this.props;
   var {alertPassword, alertUsername, alertEmail }=this.state;
     return (<React.Fragment>
-      <Header></Header>
+      <Header/>
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>

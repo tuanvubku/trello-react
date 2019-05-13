@@ -4,6 +4,9 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import CardContent from '@material-ui/core/CardContent';
 import { Button } from '@material-ui/core';
+import {Draggable} from 'react-beautiful-dnd'
+
+
 @connect(null)
 class TrelloCard extends React.Component {
   onClick = e => {
@@ -37,7 +40,7 @@ class TrelloCard extends React.Component {
       }
     };
 
-    const { card } = this.props;
+    const { card,index } = this.props;
     const {
       title = '',
       members = [],
@@ -46,7 +49,10 @@ class TrelloCard extends React.Component {
       archived = false
     } = card;
     return (
-      <Card style={styles.cardContainer} onClick={this.onClick}>
+      <Draggable draggableId={String(card._id)} index={index}>
+      {provided => (
+        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+        <Card style={styles.cardContainer} onClick={this.onClick}>
         <CardContent>
           <Typography gutterBottom style={styles.title}>
             {title}{' '}
@@ -82,6 +88,10 @@ class TrelloCard extends React.Component {
           })}
         </CardContent>
       </Card>
+      </div>  
+      )}
+      </Draggable>
+      
     );
   }
 }

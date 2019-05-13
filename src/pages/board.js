@@ -13,10 +13,12 @@ import BasicLayout from '@/layouts/basic';
 import List from '@/components/List';
 import CardDetail from '@/components/CardDetail';
 import AddButton from '@/components/AddButton';
+import  {DragDropContext} from 'react-beautiful-dnd'
 
-@connect(({ board, list }) => ({
+@connect(({ board, list,user }) => ({
   boardInfo: board.boardInfo,
-  lists: list.lists
+  lists: list.lists,
+  currentUser: user.user
 }))
 class Board extends React.Component {
   componentDidMount() {
@@ -29,7 +31,32 @@ class Board extends React.Component {
     });
     dispatch.user.fetchCurrentUser();
   }
-
+  onDragEnd = (result) => {
+    const {destination, draggableId}    = result;
+    if(!destination)
+      return;
+    console.log(result)
+    console.log(destination)
+    console.log(destination.droppableId)
+    this.props.dispatch({
+      type: 'card/moveCardRequest',
+      payload: {
+        body: {
+          _id: draggableId,
+          newListId: destination.droppableId,
+          idUserMove: this.props.currentUser._id,
+          order: destination.index 
+        }
+      }
+    })
+    console.log(this.props.boardInfo._id)
+        this.props.dispatch({
+      type: 'list/fetchListOfBoard',
+      payload: {
+        boardId: this.props.boardInfo._id
+      }
+    })
+  }
   render() {
     const styles = {
       boardContainer: {
@@ -43,6 +70,8 @@ class Board extends React.Component {
 
     // console.log(lists);
     return (
+      <DragDropContext onDragEnd={this.onDragEnd}>
+
       <div>
         <h2>{title}</h2>
         <div style={styles.boardContainer}>
@@ -56,9 +85,11 @@ class Board extends React.Component {
             />
           ))}
           <AddButton list />
+        
           <CardDetail />
         </div>
       </div>
+      </DragDropContext>
     );
   }
 }

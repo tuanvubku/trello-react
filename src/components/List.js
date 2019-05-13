@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import TrelloCard from '@/components/Card';
 import AddButton from '@/components/AddButton';
+import {Droppable} from 'react-beautiful-dnd'
 
 @connect(({ card }) => ({
   globalCards: card.cards
@@ -37,13 +38,22 @@ class List extends React.Component {
     const cards = globalCards[idList] ? globalCards[idList] : [];
 
     return (
-      <div style={styles.container}>
+      <Droppable droppableId={String(idList)}>
+      {provided => (
+        <div 
+        {...provided.droppableProps}
+          ref={provided.innerRef}
+        style={styles.container}>
         <h4 style={styles.styleHeader}>{title}</h4>
-        {cards.map(card => (
-          <TrelloCard key={card._id} card={card} />
+        {cards.map((card,index) => (
+          <TrelloCard key={card._id} card={card} index={index} />
         ))}
         <AddButton idList={idList} />
       </div>
+
+      )}
+      </Droppable>
+  
     );
   }
 }
