@@ -13,9 +13,9 @@ import BasicLayout from '@/layouts/basic';
 import List from '@/components/List';
 import CardDetail from '@/components/CardDetail';
 import AddButton from '@/components/AddButton';
-import  {DragDropContext} from 'react-beautiful-dnd'
+import { DragDropContext } from 'react-beautiful-dnd';
 
-@connect(({ board, list,user }) => ({
+@connect(({ board, list, user }) => ({
   boardInfo: board.boardInfo,
   lists: list.lists,
   currentUser: user.user
@@ -31,32 +31,34 @@ class Board extends React.Component {
     });
     dispatch.user.fetchCurrentUser();
   }
-  onDragEnd = (result) => {
-    const {destination, draggableId}    = result;
-    if(!destination)
-      return;
-    console.log(result)
-    console.log(destination)
-    console.log(destination.droppableId)
+  onDragEnd = result => {
+    const { source, destination, draggableId } = result;
+    if (!destination) return;
+
+    const { droppableId: sourceList } = source;
+    const { droppableId: destList, index: order } = destination;
+
+    // console.log(result);
+    // console.log(destination);
+    // console.log(destination.droppableId);
     this.props.dispatch({
       type: 'card/moveCardRequest',
       payload: {
-        body: {
-          _id: draggableId,
-          newListId: destination.droppableId,
-          idUserMove: this.props.currentUser._id,
-          order: destination.index 
-        }
+        _id: draggableId,
+        newListId: destList,
+        oldListId: sourceList,
+        idUserMove: this.props.currentUser._id,
+        order
       }
-    })
-    console.log(this.props.boardInfo._id)
-        this.props.dispatch({
-      type: 'list/fetchListOfBoard',
-      payload: {
-        boardId: this.props.boardInfo._id
-      }
-    })
-  }
+    });
+    // console.log(this.props.boardInfo._id)
+    // this.props.dispatch({
+    //   type: 'list/fetchListOfBoard',
+    //   payload: {
+    //     boardId: this.props.boardInfo._id
+    //   }
+    // })
+  };
   render() {
     const styles = {
       boardContainer: {
@@ -71,24 +73,23 @@ class Board extends React.Component {
     // console.log(lists);
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
+        <div>
+          <h2>{title}</h2>
+          <div style={styles.boardContainer}>
+            {lists.map(({ name, cards, _id }) => (
+              <List
+                title={name}
+                cards={cards}
+                key={_id}
+                idList={_id}
+                idBoard={boardId}
+              />
+            ))}
+            <AddButton list />
 
-      <div>
-        <h2>{title}</h2>
-        <div style={styles.boardContainer}>
-          {lists.map(({ name, cards, _id }) => (
-            <List
-              title={name}
-              cards={cards}
-              key={_id}
-              idList={_id}
-              idBoard={boardId}
-            />
-          ))}
-          <AddButton list />
-        
-          <CardDetail />
+            <CardDetail />
+          </div>
         </div>
-      </div>
       </DragDropContext>
     );
   }

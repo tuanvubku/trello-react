@@ -81,6 +81,55 @@ export const card = {
         ...state,
         cards: cardItems
       };
+    },
+    resolveMoveCard(state, { sourceList, cardId, destList, newOrder }) {
+      const { order: oldOrder, ...cardBeingMoved } = state.cards[
+        sourceList
+      ].find(x => x._id === cardId);
+      const moveUp = newOrder > oldOrder;
+
+      if (sourceList === destList) {
+        console.log(`move ${oldOrder} -> ${newOrder}`);
+        return {
+          ...state,
+          cards: {
+            ...state.cards,
+            [sourceList]: state.cards[sourceList].map(x => {
+              if (x._id === cardId) x.order = newOrder;
+              else if (moveUp) {
+                // move card up
+                if (x.order >= newOrder && x.order < oldOrder) x.order += 1;
+              } else {
+                // move card down
+                if (x.order <= newOrder && x.order > oldOrder) x.order -= 1;
+              }
+              return x;
+            })
+          }
+        };
+      } else {
+        const newSourceList = state.cards[sourceList].filter(
+          x => x._id !== cardId
+        );
+        const newDestList = state.cards[destList].map(x => {
+          if (x.order >= newOrder) x.order += 1;
+          return x;
+        });
+        cardBeingMoved.order = newOrder;
+        newDestList.push(cardBeingMoved);
+
+        return {
+          ...state,
+          cards: {
+            ...state.cards,
+            [sourceList]: newSourceList.map(x => {
+              if (x.order > cardBeingMoved.order) x.order -= 1;
+              return x;
+            }),
+            [destList]: newDestList
+          }
+        };
+      }
     }
   },
   effects: {
@@ -137,17 +186,27 @@ export const card = {
         }
       });
     },
-    *moveCardRequest({ body }) {
-      console.log(`move card request`);
-      console.log(body)
-      const { card } = yield call(moveCardRequest, {
-        data: { body }
-      });
-      console.log(card)
+    *moveCardRequest({ _id, newListId, oldListId, idUserMove, order }) {
+      console.log(
+        `move card request ${_id}, ${oldListId} -> ${newListId}, ${order}`
+      );
+      // console.log(card);
       yield put({
-        type: 'card/putCurrentCard',
+        type: 'card/resolveMoveCard',
         payload: {
-          card
+          cardId: _id,
+          sourceList: oldListId,
+          destList: newListId,
+          newOrder: order
+        }
+      });
+      // console.log(body)
+      yield call(moveCardRequest, {
+        data: {
+          _id,
+          newListId,
+          idUserMove,
+          order
         }
       });
     },

@@ -26,6 +26,9 @@ import deepPurple from '@material-ui/core/colors/deepPurple';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Checkbox from '@material-ui/core/Checkbox';
+
+// import * as moment from 'moment';
+
 const DialogTitle = withStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -380,7 +383,11 @@ class CardDetail extends React.Component {
     });
   };
   render() {
-    const { classes, comments = [], logCards = [] } = this.props;
+    const { classes, comments: raw_comments = [], logCards = [] } = this.props;
+    const comments = raw_comments.reverse();
+    // comments.sort((x, y) =>
+    // moment(x.dateCreated) > moment(y.dateCreated) ? 1 : -1
+    // );
     var {
       commentText,
       description,
@@ -452,77 +459,79 @@ class CardDetail extends React.Component {
                     </i>
                     Thành viên
                   </Typography>
-                  {members.map(mem => {
-                    // TODO: Fetch member info from id
-                    // members is not fetched, populated from id
-                    mem = {
-                      ...mem,
-                      imageUrl:
-                        'https://i2.wp.com/www.bemanistyle.com/wp-content/uploads/2018/01/Linux-Avatar-300px.png?fit=300%2C300&ssl=1'
-                    };
-                    return (
-                      <PopupState variant="popover" key={mem.username}>
-                        {popupState => (
-                          <div>
-                            <Tooltip title={mem.username} placement="bottom">
-                              <Avatar
-                                {...bindTrigger(popupState)}
-                                key={mem.username}
-                                src={mem.imageUrl}
-                                style={customStyle.purpleAvatar}
+                  {members.map(
+                    ({
+                      _id,
+                      username,
+                      imageUrl = 'http://tinyurl.com/y34hpqbr'
+                    }) => {
+                      return (
+                        <PopupState variant="popover" key={username}>
+                          {popupState => (
+                            <div>
+                              <Tooltip title={username} placement="bottom">
+                                <Avatar
+                                  {...bindTrigger(popupState)}
+                                  key={username}
+                                  src={imageUrl}
+                                  style={customStyle.purpleAvatar}
+                                >
+                                  {username.substring(0, 2)}
+                                </Avatar>
+                              </Tooltip>
+                              <Popover
+                                {...bindPopover(popupState)}
+                                anchorOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'center'
+                                }}
+                                transformOrigin={{
+                                  vertical: 'top',
+                                  horizontal: 'center'
+                                }}
                               >
-                                {mem.username.substring(0, 2)}
-                              </Avatar>
-                            </Tooltip>
-                            <Popover
-                              {...bindPopover(popupState)}
-                              anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center'
-                              }}
-                              transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center'
-                              }}
-                            >
-                              <Card
-                                style={{ ...styles.cardContainer, width: 200 }}
-                              >
-                                <CardContent>
-                                  <Avatar
-                                    src={mem.imageUrl}
-                                    style={customStyle.purpleAvatar}
-                                  >
-                                    {mem.username.substring(0, 2)}
-                                  </Avatar>
-                                  <Typography style={customStyle.title}>
-                                    {' '}
-                                    {mem.username}
-                                  </Typography>
-                                  <Button
-                                    onClick={() =>
-                                      this.deleteMember(mem.username)
-                                    }
-                                    id={mem.username}
-                                    variant="contained"
-                                    color="primary"
-                                    disableRipple
-                                    className={classNames(
-                                      classes.margin,
-                                      classes.bootstrapRoot
-                                    )}
-                                  >
-                                    {' '}
-                                    Gỡ{' '}
-                                  </Button>
-                                </CardContent>
-                              </Card>
-                            </Popover>
-                          </div>
-                        )}
-                      </PopupState>
-                    );
-                  })}
+                                <Card
+                                  style={{
+                                    ...styles.cardContainer,
+                                    width: 200
+                                  }}
+                                >
+                                  <CardContent>
+                                    <Avatar
+                                      src={imageUrl}
+                                      style={customStyle.purpleAvatar}
+                                    >
+                                      {username.substring(0, 2)}
+                                    </Avatar>
+                                    <Typography style={customStyle.title}>
+                                      {' '}
+                                      {username}
+                                    </Typography>
+                                    <Button
+                                      onClick={() =>
+                                        this.deleteMember(username)
+                                      }
+                                      id={username}
+                                      variant="contained"
+                                      color="primary"
+                                      disableRipple
+                                      className={classNames(
+                                        classes.margin,
+                                        classes.bootstrapRoot
+                                      )}
+                                    >
+                                      {' '}
+                                      Gỡ{' '}
+                                    </Button>
+                                  </CardContent>
+                                </Card>
+                              </Popover>
+                            </div>
+                          )}
+                        </PopupState>
+                      );
+                    }
+                  )}
                 </div>
 
                 <hr style={{ clear: 'both' }} />
@@ -688,16 +697,19 @@ class CardDetail extends React.Component {
                   Các bình luận{' '}
                 </Typography>
 
-                {comments.map(({ content, ownerId, cardId, _id }) => (
-                  <Comment
-                    content={content}
-                    username={ownerId.username}
-                    imageUrl={ownerId.imageUrl}
-                    cardId={cardId}
-                    key={_id}
-                    _id={_id}
-                  />
-                ))}
+                {comments.map(
+                  ({ content, dateCreated, ownerId, cardId, _id }) => (
+                    <Comment
+                      content={content}
+                      dateCreated={dateCreated}
+                      username={ownerId.username}
+                      imageUrl={ownerId.imageUrl}
+                      cardId={cardId}
+                      key={_id}
+                      _id={_id}
+                    />
+                  )
+                )}
 
                 <Typography
                   gutterBottom
