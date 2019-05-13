@@ -50,33 +50,7 @@ const styles = theme => ({
     flexGrow: 1
   }
 });
-
-// call api here
-const suggestions = [
-  {
-    _id: 1,
-    username: 'Afghanistan  ',
-    imageUrl: 'http://tinyurl.com/y2huxff2'
-  },
-  { _id: 2, username: 'bland ', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  { _id: 1, username: 'clbania', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  { _id: 3, username: 'dlgeria', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  {
-    _id: 1,
-    username: 'emerican Samoa',
-    imageUrl: 'http://tinyurl.com/y2sb9nog'
-  },
-  { _id: 3, username: 'gndorra', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  { _id: 1, username: 'hngola', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  { _id: 2, username: 'inguilla', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  { _id: 1, username: 'kntarctica', imageUrl: 'http://tinyurl.com/y2sb9nog' },
-  {
-    _id: 2,
-    username: 'Antigua  Barbuda',
-    imageUrl: 'http://tinyurl.com/y2sb9nog'
-  }
-];
-
+var suggestions = []; // global
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
   return (
@@ -150,12 +124,24 @@ function getSuggestions(value) {
 }
 @connect(({ user, card }) => ({
   currentUser: user.user,
-  currentCard: card.currentCard
+  currentCard: card.currentCard,
+  allUsername: user.allUsername
 }))
 class AutoCompleteTextField extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { username: '' };
+    this.state = { username: '', allUsername: [] };
+  }
+  componentWillMount() {
+    var { dispatch } = this.props;
+    dispatch({
+      type: 'user/fetchAllUsername',
+      payload: {}
+    });
+  }
+  componentWillReceiveProps(props) {
+    this.setState({ allUsername: props.allUsername });
+    suggestions = props.allUsername;
   }
   onSave = () => {
     var { dispatch, currentUser, currentCard } = this.props;
@@ -176,6 +162,8 @@ class AutoCompleteTextField extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    var { allUsername } = this.state;
+    suggestions = allUsername;
     return (
       <div className={classes.root}>
         <form>

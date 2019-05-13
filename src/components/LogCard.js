@@ -29,13 +29,15 @@ class LogCard extends React.Component {
         fontColor: 'brown'
       }
     };
-    const { action } = this.props;
+    const { action, imageUrl, username } = this.props;
     return (
       <Fragment>
         <hr />
-        <Avatar style={styles.purpleAvatar}>OP</Avatar>
+        <Avatar src={imageUrl} style={styles.purpleAvatar}>
+          {username.substring(0, 2)}
+        </Avatar>
         <Typography style={styles.username} gutterBottom>
-          <span style={{ fontWeight: 'bold' }}>Nguyễn Văn A: </span> {action}{' '}
+          <span style={{ fontWeight: 'bold' }}>{username} </span> {action}{' '}
         </Typography>
       </Fragment>
     );

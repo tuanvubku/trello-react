@@ -200,6 +200,24 @@ router.delete('/:_id', (req, res) => {
     status: 'ok'
   });
 });
+
+router.post('/add', (req,res) => {
+  sampleCards.push({
+    title: req.body.title,
+    ownerId: req.body.ownerId ,
+    listId: req.body.listId    
+  })
+  res.send({
+    status: "Ok",
+    card: {
+      title: req.body.title,
+      ownerId: req.body.ownerId,
+      listId: req.body.listId 
+    }
+  })
+})
+
+
 module.exports = {
   cardEndpoint: router,
   sampleCards

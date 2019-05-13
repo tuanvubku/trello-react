@@ -1,10 +1,10 @@
-import request, { METHOD } from '@/utils/request';
+import request, { METHOD, API_PATH } from '@/utils/request';
 
 const { GET } = METHOD;
+const { CARD } = API_PATH;
 
-export const fetchLogOfCard = async ({ params }) => {
-  return request(`/api/logCard/`, {
-    method: GET,
-    params
+export const fetchLogOfCard = async ({ query }) => {
+  return request(`${CARD}/${query}`, {
+    method: GET
   });
 };

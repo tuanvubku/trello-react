@@ -3,20 +3,18 @@ import { connect } from 'react-redux';
 
 import TrelloCard from '@/components/Card';
 import AddButton from '@/components/AddButton';
+import { Droppable } from 'react-beautiful-dnd';
 
 @connect(({ card }) => ({
   globalCards: card.cards
 }))
 class List extends React.Component {
-  componentDidMount() {
-    const { dispatch, idList, idBoard } = this.props;
-    dispatch({
-      type: 'card/fetchCardOfListFromBoard',
-      payload: {
-        boardId: idBoard,
-        listId: idList
-      }
-    });
+  state = {
+    globalCards: []
+  };
+
+  componentWillReceiveProps(props) {
+    this.setState({ globalCards: props.globalCards });
   }
 
   render() {
@@ -36,17 +34,26 @@ class List extends React.Component {
     };
 
     const { title, idList } = this.props;
-    const { globalCards } = this.props;
+    const { globalCards } = this.state;
     const cards = globalCards[idList] ? globalCards[idList] : [];
+    cards.sort((x, y) => (x.order > y.order ? 1 : -1));
 
     return (
-      <div style={styles.container}>
-        <h4 style={styles.styleHeader}>{title}</h4>
-        {cards.map(card => (
-          <TrelloCard key={card._id} card={card} />
-        ))}
-        <AddButton idList={idList} />
-      </div>
+      <Droppable droppableId={String(idList)}>
+        {provided => (
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            style={styles.container}
+          >
+            <h4 style={styles.styleHeader}>{title}</h4>
+            {cards.map((card, index) => (
+              <TrelloCard key={card._id} card={card} index={index} />
+            ))}
+            <AddButton idList={idList} />
+          </div>
+        )}
+      </Droppable>
     );
   }
 }

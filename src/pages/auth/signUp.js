@@ -2,22 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { navigate } from 'gatsby';
 import PropTypes from 'prop-types';
-
-import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
+import withStyles from '@material-ui/core/styles/withStyles';
 import Header from '@/layouts/header';
-
 const styles = theme => ({
   main: {
     width: 'auto',
@@ -52,50 +47,52 @@ const styles = theme => ({
 });
 const customStyles = {
   root: {
-    margin: 7
+    marginTop: 7
   }
 };
-
 @connect(({ user }) => ({
   error: user.error
 }))
-class Login extends React.Component {
+class SignUp extends React.Component {
   state = {
     username: '',
     password: '',
-    alertAccount: ''
+    repPassword: '',
+    email: '',
+    alertPassword: '',
+    alertUsername: '',
+    alertEmail: ''
   };
   componentWillReceiveProps(props) {
-    console.log(props);
     var { error } = props;
     if (error) {
-      if (error.alertAccount)
-        this.setState({ alertAccount: error.alertAccount });
+      if (error.alertUsername)
+        this.setState({ alertUsername: error.alertUsername });
     }
   }
-  onSubmit = () => {
+  onSubmit = e => {
+    e.preventDefault();
+    this.setState({ alertPassword: '', alertUsername: '', alertEmail: '' });
     const { dispatch } = this.props;
-    this.setState({ alertAccount: '' });
-    const { username, password } = this.state;
+    const { username, password, email, repPassword } = this.state;
+    if (password !== repPassword) {
+      this.setState({ alertPassword: 'Password not match' });
+      return false;
+    }
     dispatch({
-      type: 'user/login',
-      payload: {
-        username,
-        password
-      }
+      type: 'user/signUp',
+      payload: { username, password, email }
     });
   };
 
-  handleChange = name => event => {
+  handleChange = event => {
     this.setState({
-      [name]: event.target.value
+      [event.target.name]: event.target.value
     });
   };
-
   render() {
     var { classes } = this.props;
-    var { alertAccount } = this.state;
-    // console.log(alertAccount);
+    var { alertPassword, alertUsername, alertEmail } = this.state;
     return (
       <React.Fragment>
         <Header />
@@ -106,19 +103,43 @@ class Login extends React.Component {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Login
+              Sign up
             </Typography>
 
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={this.onSubmit}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email Address</InputLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={this.handleChange}
+                />
+                <Typography
+                  style={{ ...customStyles.root, color: 'red' }}
+                  variant="subtitle1"
+                  align="center"
+                >
+                  {alertEmail}{' '}
+                </Typography>
+              </FormControl>
+
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Username</InputLabel>
                 <Input
                   id="username"
                   name="username"
                   autoComplete="username"
-                  onChange={this.handleChange('username')}
-                  value={this.state.username}
+                  onChange={this.handleChange}
                 />
+                <Typography
+                  style={{ ...customStyles.root, color: 'red' }}
+                  variant="subtitle1"
+                  align="center"
+                >
+                  {alertUsername}{' '}
+                </Typography>
               </FormControl>
 
               <FormControl margin="normal" required fullWidth>
@@ -127,45 +148,51 @@ class Login extends React.Component {
                   name="password"
                   type="password"
                   id="password"
+                  onChange={this.handleChange}
                   autoComplete="current-password"
-                  onChange={this.handleChange('password')}
-                  value={this.state.password}
+                />
+              </FormControl>
+
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Repead password</InputLabel>
+                <Input
+                  name="repPassword"
+                  type="password"
+                  id="repPassword"
+                  onChange={this.handleChange}
+                  autoComplete="repPassword"
                 />
                 <Typography
                   style={{ ...customStyles.root, color: 'red' }}
                   variant="subtitle1"
                   align="center"
                 >
-                  {alertAccount}{' '}
+                  {alertPassword}{' '}
                 </Typography>
               </FormControl>
 
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-
               <Button
-                autoFocus
                 fullWidth
-                onClick={this.onSubmit}
+                type="submit"
                 variant="contained"
                 color="primary"
+                Sign
+                up
                 className={classes.submit}
               >
-                Login
+                Register
               </Button>
               <Typography
                 style={customStyles.root}
                 variant="subtitle1"
                 align="right"
               >
-                Don't have account,{' '}
+                Have account,{' '}
                 <a
-                  onClick={() => navigate('auth/signUp')}
+                  onClick={() => navigate('auth/login')}
                   style={{ cursor: 'pointer', color: 'green' }}
                 >
-                  register here
+                  login here
                 </a>{' '}
               </Typography>
             </form>
@@ -176,8 +203,8 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
+SignUp.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(SignUp);

@@ -25,17 +25,13 @@ class Comment extends React.Component {
     });
   };
   onSave = e => {
-    var { _id, currentUser, dispatch, currentCard } = this.props;
+    var { _id, currentUser, dispatch } = this.props;
     var { content } = this.state;
     var body = { _id, content, idUserEdit: currentUser._id };
     this.setState({ isEdit: false });
     dispatch({
       type: 'comment/editCommentRequest',
       payload: { body }
-    });
-    dispatch({
-      type: 'comment/fetchCommentOfCard',
-      payload: { cardId: currentCard._id }
     });
   };
   handleInputChange = e => {
@@ -117,7 +113,7 @@ class Comment extends React.Component {
       }
     };
 
-    const { content } = this.props;
+    const { content, imageUrl, username, dateCreated } = this.props;
     const { isEdit } = this.state;
     var body = isEdit ? (
       <div>
@@ -151,9 +147,11 @@ class Comment extends React.Component {
 
     return (
       <Fragment>
-        <Avatar style={styles.purpleAvatar}>OP</Avatar>
+        <Avatar style={styles.purpleAvatar} src={imageUrl}>
+          {username.substring(0, 2)}
+        </Avatar>
         <Typography style={styles.username} gutterBottom>
-          Nguyễn Văn A
+          {username} {dateCreated}
         </Typography>
         <Card style={styles.cardContainer} onClick={this.onClick}>
           <CardContent>{body}</CardContent>

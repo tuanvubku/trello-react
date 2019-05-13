@@ -7,7 +7,9 @@ import {
   removeMemberRequest,
   addMemberRequest,
   deleteCardRequest,
-  deleteLabelCardRequest
+  deleteLabelCardRequest,
+  addCardRequest,
+  getCardRequest
 } from '@/services/card';
 
 export const card = {
@@ -18,6 +20,23 @@ export const card = {
     currentCard: {}
   },
   reducers: {
+    putListCard(state, { card }) {
+      // console.log(card);
+      // let newState = Object.assign({}, state);
+      // for(let card_ in newState.cards){
+      //   if(card.listId == card_){
+      //     newState.cards[card_].push(card);
+      //   }
+      // }
+      const { listId } = card;
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          [listId]: [...state.cards[card.listId], card]
+        }
+      };
+    },
     put(state, { listId, cardInfo }) {
       return {
         ...state,
@@ -28,11 +47,19 @@ export const card = {
       };
     },
     putCurrentCard(state, { card }) {
+      const { listId, ...cardInfo } = card;
       return {
         ...state,
-        currentCard: card
+        currentCard: card,
+        cards: {
+          ...state.cards,
+          [listId]: state.cards[listId].map(x =>
+            x._id === cardInfo._id ? cardInfo : x
+          )
+        }
       };
     },
+
     toggleModal(state, { card }) {
       //  toggle detail card form
       return {
@@ -47,6 +74,62 @@ export const card = {
         ...state,
         subForm: { open, kind }
       };
+    },
+    fromList(state, { cardItems }) {
+      // console.log(cardItems);
+      return {
+        ...state,
+        cards: cardItems
+      };
+    },
+    resolveMoveCard(state, { sourceList, cardId, destList, newOrder }) {
+      const { order: oldOrder, ...cardBeingMoved } = state.cards[
+        sourceList
+      ].find(x => x._id === cardId);
+      const moveUp = newOrder > oldOrder;
+
+      if (sourceList === destList) {
+        console.log(`move ${oldOrder} -> ${newOrder}`);
+        return {
+          ...state,
+          cards: {
+            ...state.cards,
+            [sourceList]: state.cards[sourceList].map(x => {
+              if (x._id === cardId) x.order = newOrder;
+              else if (moveUp) {
+                // move card up
+                if (x.order >= newOrder && x.order < oldOrder) x.order += 1;
+              } else {
+                // move card down
+                if (x.order <= newOrder && x.order > oldOrder) x.order -= 1;
+              }
+              return x;
+            })
+          }
+        };
+      } else {
+        const newSourceList = state.cards[sourceList].filter(
+          x => x._id !== cardId
+        );
+        const newDestList = state.cards[destList].map(x => {
+          if (x.order >= newOrder) x.order += 1;
+          return x;
+        });
+        cardBeingMoved.order = newOrder;
+        newDestList.push(cardBeingMoved);
+
+        return {
+          ...state,
+          cards: {
+            ...state.cards,
+            [sourceList]: newSourceList.map(x => {
+              if (x.order > cardBeingMoved.order) x.order -= 1;
+              return x;
+            }),
+            [destList]: newDestList
+          }
+        };
+      }
     }
   },
   effects: {
@@ -67,10 +150,11 @@ export const card = {
       });
     },
     *editCardRequest({ body }) {
-      console.log(`editting card request  `);
+      console.log(`editting card request`);
       const { card } = yield call(editCardRequest, {
         data: { body }
       });
+      console.log(card);
       yield put({
         type: 'card/putCurrentCard',
         payload: {
@@ -79,7 +163,7 @@ export const card = {
       });
     },
     *addMemberRequest({ body }) {
-      console.log(`add member card request  `);
+      console.log(`add member card request`);
       const { card } = yield call(addMemberRequest, {
         data: { body }
       });
@@ -91,7 +175,7 @@ export const card = {
       });
     },
     *removeMemberRequest({ body }) {
-      console.log(`remove member card request  `);
+      console.log(`remove member card request`);
       const { card } = yield call(removeMemberRequest, {
         data: { body }
       });
@@ -102,15 +186,27 @@ export const card = {
         }
       });
     },
-    *moveCardRequest({ body }) {
-      console.log(`move card request  `);
-      const { card } = yield call(moveCardRequest, {
-        data: { body }
-      });
+    *moveCardRequest({ _id, newListId, oldListId, idUserMove, order }) {
+      console.log(
+        `move card request ${_id}, ${oldListId} -> ${newListId}, ${order}`
+      );
+      // console.log(card);
       yield put({
-        type: 'card/putCurrentCard',
+        type: 'card/resolveMoveCard',
         payload: {
-          card
+          cardId: _id,
+          sourceList: oldListId,
+          destList: newListId,
+          newOrder: order
+        }
+      });
+      // console.log(body)
+      yield call(moveCardRequest, {
+        data: {
+          _id,
+          newListId,
+          idUserMove,
+          order
         }
       });
     },
@@ -124,6 +220,7 @@ export const card = {
         data: { body }
       });
     },
+
     *deleteLabelCardRequest({ body }) {
       console.log(`delete label card   `);
       const { card } = yield call(deleteLabelCardRequest, {
@@ -131,6 +228,35 @@ export const card = {
       });
       yield put({
         type: 'card/putCurrentCard',
+        payload: {
+          card
+        }
+      });
+    },
+
+    *addCardRequest({ title, ownerId, listId }) {
+      console.log(`add card`);
+      const { card } = yield call(addCardRequest, {
+        data: {
+          title,
+          ownerId,
+          listId
+        }
+      });
+      console.log(card);
+      yield put({
+        type: 'card/putListCard',
+        payload: {
+          card
+        }
+      });
+    },
+    *getCardRequest({ _id }) {
+      // get card info
+      console.log(`get card request  `);
+      const { card } = yield call(getCardRequest, { query: _id });
+      yield put({
+        type: 'card/toggleModal',
         payload: {
           card
         }

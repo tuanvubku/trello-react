@@ -1,16 +1,23 @@
-import request, { METHOD } from '@/utils/request';
+import request, { METHOD, API_PATH } from '@/utils/request';
 
-const { GET } = METHOD;
+const { GET, POST } = METHOD;
+const { BOARD, LIST } = API_PATH;
 
 export const fetchListInfo = async ({ query }) => {
-  return request(`/api/list/${query}`, {
+  return request(`${LIST}/${query}`, {
     method: GET
   });
 };
 
-export const fetchListOfBoard = async ({ params }) => {
-  return request(`/api/list/`, {
-    method: GET,
-    params
+export const fetchListOfBoard = async ({ query }) => {
+  return request(`${BOARD}/${query}/lists`, {
+    method: GET
+  });
+};
+
+export const addListOfBoard = async ({ data }) => {
+  return request(`${LIST}/add`, {
+    method: POST,
+    data
   });
 };
