@@ -113,7 +113,7 @@ class Comment extends React.Component {
       }
     };
 
-    const { content, imageUrl, username } = this.props;
+    const { content, imageUrl, username, dateCreated } = this.props;
     const { isEdit } = this.state;
     var body = isEdit ? (
       <div>
@@ -151,7 +151,7 @@ class Comment extends React.Component {
           {username.substring(0, 2)}
         </Avatar>
         <Typography style={styles.username} gutterBottom>
-          {username}
+          {username} {dateCreated}
         </Typography>
         <Card style={styles.cardContainer} onClick={this.onClick}>
           <CardContent>{body}</CardContent>

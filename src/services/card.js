@@ -38,7 +38,7 @@ export const removeMemberRequest = async ({ data }) => {
 export const moveCardRequest = async ({ data }) => {
   return request(`${CARD}/move`, {
     method: POST,
-    data: data.body
+    data
   });
 };
 
