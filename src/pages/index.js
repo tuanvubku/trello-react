@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -23,21 +23,19 @@ const styles = {
   // userLoading: loading.effects.user.fetchCurrent
 }))
 @withStyles(styles)
-class Index extends React.Component { 
+class Index extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch.user.fetchCurrentUser();
   }
   componentWillReceprops(props) {
-    const { dispatch } = props; 
+    const { dispatch } = props;
     dispatch.user.fetchCurrentUser();
   }
   render() {
-    const { fetchStatus, user = {}, board = [] } = this.props;  
-    if (!user && fetchStatus === undefined) return 'Loading...'; 
-    return (
-      <BasicLayout board={board}/>
-    );
+    const { fetchStatus, user = {}, board = [] } = this.props;
+    if (!user && fetchStatus === undefined) return 'Loading...';
+    return <BasicLayout board={board} />;
   }
 }
 

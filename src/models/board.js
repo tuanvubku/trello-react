@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import { fetchBoard } from '@/services/board';
+import { fetchBoard, addBoardRequest } from '@/services/board';
 
 export const board = {
   state: {},
@@ -22,6 +22,16 @@ export const board = {
         payload: {
           boardId: id
         }
+      });
+    },
+    *addBoardRequest(payload) {
+      const { board } = yield call(addBoardRequest, {
+        data: payload
+      });
+
+      yield put({
+        type: 'user/myboardSingle',
+        payload: { newBoard: board }
       });
     }
   }

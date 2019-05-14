@@ -39,6 +39,9 @@ export const user = {
     myboard(state, { boards }) {
       return { ...state, board: boards };
     },
+    myboardSingle(state, { newBoard }) {
+      return { ...state, board: [...state.board, newBoard] };
+    },
     setUsernames(state, { usernames }) {
       return { ...state, allUsername: usernames };
     },
