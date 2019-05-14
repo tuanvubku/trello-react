@@ -4427,10 +4427,10 @@ gatsby-link@^2.1.1:
     "@types/reach__router" "^1.0.0"
     prop-types "^15.6.1"
 
-gatsby-plugin-material-ui@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-material-ui/-/gatsby-plugin-material-ui-1.2.4.tgz#04f34399b27a2569d98888d0592187ba2cad82ef"
-  integrity sha512-/IJKd/NWIiwSK4MYxyvW+motRXsYcR1dQFTXOUlt2NrueIEywUDVVXHlk7uatbpLgOkL9B7Qw/l9bRQ8E4h2NA==
+gatsby-plugin-material-ui@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-material-ui/-/gatsby-plugin-material-ui-1.2.5.tgz#6a6937acc96eb2833c957d5d7cfc16710aecdf1c"
+  integrity sha512-eYR1/xnrrieSGYA7ZDsbzrkO+7u7KPdYMod1MvnlHzom8NvQOFSum2oRyniknkezeTXZsnocu9olDAykgjHlxg==
   dependencies:
     react-jss "^8.6.1"
 
