@@ -1,12 +1,17 @@
 import { call, put } from 'redux-saga/effects';
 
-import { fetchListOfBoard, addListOfBoard } from '@/services/list';
+import { fetchListOfBoard, addListOfBoard,editListOfBoard } from '@/services/list';
 
 export const list = {
   state: {
     lists: []
   },
   reducers: {
+    editList(state, { list }){
+      return {
+        lists: state.lists.map(x => x._id === list._id ? list : x)
+      }
+    },
     putList(state, { list }) {
       console.log('list model: ', list);
       return {
@@ -43,7 +48,7 @@ export const list = {
       });
       yield put({
         type: 'card/fromList',
-        payload: { cardItems }
+        payload: { cardItems }  
       });
     },
     *addListRequest({ name, ownerId, boardId }) {
@@ -62,6 +67,21 @@ export const list = {
           list
         }
       });
+    },
+    *editListRequest({_id, name, archived}){
+      const {list} = yield call(editListOfBoard,{
+        data: {
+          _id,
+          name,
+          archived
+        }
+      });
+      yield put({
+        type: 'list/editList',
+        payload: {
+          list
+        } 
+      })
     }
   }
 };

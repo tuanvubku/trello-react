@@ -21,3 +21,11 @@ export const addListOfBoard = async ({ data }) => {
     data
   });
 };
+
+export const editListOfBoard = async ({ data }) => {
+  console.log("edit service")
+  return request(`${LIST}/edit`, {
+    method: POST,
+    data
+  });
+};
