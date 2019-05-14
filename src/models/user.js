@@ -36,14 +36,12 @@ export const user = {
         role
       };
     },
-    myboard(state, { boards }) {  
+    myboard(state, { boards }) {
       return { ...state, board: boards };
     },
-    myboardSingle(state, { boards }) {  
-      var tem=state.board;
-      tem.push(boards); 
-      return { ...state, board: tem };  
-    }, 
+    myboardSingle(state, { newBoard }) {
+      return { ...state, board: [...state.board, newBoard] };
+    },
     setUsernames(state, { usernames }) {
       return { ...state, allUsername: usernames };
     },

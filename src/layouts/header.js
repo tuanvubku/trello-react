@@ -1,27 +1,32 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
+import { navigate } from 'gatsby';
 
+import { withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import AppBar from '@material-ui/core/AppBar';
-import { navigate } from 'gatsby';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { fade } from '@material-ui/core/styles/colorManipulator';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Icon from '@material-ui/core/Icon';
 import Popover from '@material-ui/core/Popover';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state/index';
+
+import PopupState, {
+  bindTrigger,
+  bindPopover
+} from 'material-ui-popup-state/index';
+
 const styles = theme => ({
   root: {
     width: '100%'
@@ -111,7 +116,8 @@ const customStyle = {
   },
   margin: { width: 130, marginLeft: 9, marginTop: -15 }
 };
-@connect(({ user, }) => ({
+
+@connect(({ user }) => ({
   currentUser: user.user
 }))
 class PrimarySearchAppBar extends React.Component {
@@ -130,7 +136,7 @@ class PrimarySearchAppBar extends React.Component {
       type: 'user/logout',
       payload: {}
     });
-    navigate('/')
+    navigate('/');
   };
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -155,7 +161,8 @@ class PrimarySearchAppBar extends React.Component {
     this.setState({ background: e.target.style.backgroundColor });
   };
   handleChange = e => {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     var name = e.target.name;
     this.setState({ [name]: value });
   };
@@ -163,11 +170,16 @@ class PrimarySearchAppBar extends React.Component {
     var { dispatch, currentUser } = this.props;
     var { boardName, background, isPublic } = this.state;
     if (!boardName) return false;
-    var body = { name: boardName, background, modeView: isPublic, ownerId: currentUser._id }
+    var body = {
+      name: boardName,
+      background,
+      modeView: isPublic,
+      ownerId: currentUser._id
+    };
     dispatch({
       type: 'board/addBoardRequest',
-      payload: { body }
-    }); 
+      payload: body
+    });
     this.setState({
       anchorEl: null,
       mobileMoreAnchorEl: null,
@@ -175,7 +187,7 @@ class PrimarySearchAppBar extends React.Component {
       boardName: '',
       isPublic: true
     });
-  }
+  };
   render() {
     const { anchorEl, mobileMoreAnchorEl } = this.state;
     const { classes } = this.props;
@@ -203,10 +215,9 @@ class PrimarySearchAppBar extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMenuClose}
       >
-
         <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit" >
-            <Icon className={classes.icon} color="disabled" fontSize="large" >
+          <IconButton color="inherit">
+            <Icon className={classes.icon} color="disabled" fontSize="large">
               {' '}
               add_circle{' '}
             </Icon>
@@ -246,6 +257,9 @@ class PrimarySearchAppBar extends React.Component {
               variant="h6"
               color="inherit"
               noWrap
+              onClick={() => {
+                navigate('/');
+              }}
             >
               Trello clone
             </Typography>
@@ -256,7 +270,7 @@ class PrimarySearchAppBar extends React.Component {
               <PopupState variant="popover" popupId="demo-popup-popover">
                 {popupState => (
                   <div>
-                    <IconButton color="inherit" {...bindTrigger(popupState)} >
+                    <IconButton color="inherit" {...bindTrigger(popupState)}>
                       <Icon
                         className={classes.icon}
                         color="error"
@@ -271,11 +285,11 @@ class PrimarySearchAppBar extends React.Component {
                       {...bindPopover(popupState)}
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'center',
+                        horizontal: 'center'
                       }}
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'center',
+                        horizontal: 'center'
                       }}
                     >
                       <div style={customStyle.textField}>
@@ -301,20 +315,24 @@ class PrimarySearchAppBar extends React.Component {
                             onChange={this.handleChange}
                           />
                           Công khai
-                          </Typography>
+                        </Typography>
                         <Typography
                           gutterBottom
                           variant="subtitle1"
                           style={customStyle.title}
                         >
                           Màu nền
-                          </Typography>
+                        </Typography>
                         <br />
                         <Button
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'red', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'red',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -323,7 +341,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'yellow', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'yellow',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -332,7 +354,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'orange', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'orange',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -342,7 +368,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'blue', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'blue',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -351,7 +381,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'green', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'green',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -360,7 +394,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: '#d27af4', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: '#d27af4',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -370,7 +408,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: '#1eedab', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: '#1eedab',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -379,7 +421,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'gray', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'gray',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           {' '}
@@ -388,7 +434,11 @@ class PrimarySearchAppBar extends React.Component {
                           onClick={this.clickLabel}
                           name="label"
                           variant="contained"
-                          style={{ backgroundColor: 'white', height: 35, width: 100 }}
+                          style={{
+                            backgroundColor: 'white',
+                            height: 35,
+                            width: 100
+                          }}
                           className={classes.button}
                         >
                           <i style={{ float: 'right' }}>✔</i>
@@ -408,7 +458,6 @@ class PrimarySearchAppBar extends React.Component {
                         >
                           Tạo bảng
                         </Button>
-
                       </div>
                     </Popover>
                   </div>
@@ -442,7 +491,7 @@ class PrimarySearchAppBar extends React.Component {
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
-      </div >
+      </div>
     );
   }
 }

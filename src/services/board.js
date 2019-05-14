@@ -1,6 +1,6 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
-const { GET,POST } = METHOD;
+const { GET, POST } = METHOD;
 const { BOARD } = API_PATH;
 
 export const fetchBoard = async ({ query }) => {
@@ -11,6 +11,6 @@ export const fetchBoard = async ({ query }) => {
 export const addBoardRequest = async ({ data }) => {
   return request(`${BOARD}/add`, {
     method: POST,
-    data: data.body
+    data
   });
 };

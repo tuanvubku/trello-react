@@ -64,9 +64,9 @@ const styles = theme => ({
 
 @connect(({ user }) => ({
   user: user.user,
-  board:user.board
+  board: user.board
 }))
-class BasicLayout extends React.Component { 
+class BasicLayout extends React.Component {
   toLogin = () => {
     navigate(`/auth/login`);
   };
@@ -75,9 +75,9 @@ class BasicLayout extends React.Component {
   };
   onSubmit = boardId => {
     navigate(`/board/${boardId}`);
-  };  
+  };
   render() {
-    const { user, classes, board = [] } = this.props; 
+    const { user, classes, board = [] } = this.props;
     var welcome = (
       <div className={classes.heroContent}>
         <Typography
@@ -117,63 +117,70 @@ class BasicLayout extends React.Component {
         </div>
       </div>
     );
-    if (user.username) welcome = null; 
+    if (user.username) welcome = null;
     return (
       <React.Fragment>
         <CssBaseline />
         <Header />
         <main>
           <div className={classes.heroUnit}>{welcome} </div>
-          {this.props.children!==undefined?this.props.children:
-          (<div className={classNames(classes.layout, classes.cardGrid)}>
+          {this.props.children !== undefined ? (
+            this.props.children
+          ) : (
             <div className={classNames(classes.layout, classes.cardGrid)}>
-              <Grid container spacing={40}>
-                {board.map(
-                  ({
-                    _id,
-                    background,
-                    dateCreated,
-                    list,
-                    members,
-                    name,
-                    modelView,
-                    ownerId
-                  }) => (
-                    <Grid item key={_id} sm={6} md={4} lg={3}>
-                      <Card className={classes.card}>
-                        <CardMedia
-                          className={classes.cardMedia}
-                          image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-                          title="Image title"
-                        />
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {name}
-                          </Typography>
-                          <Typography>
-                            {_id}
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            onClick={() => this.onSubmit(_id)}
-                          >
-                            View
-                          </Button>
-                          <Button size="small" color="primary">
-                            Edit
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  )
-                )}
-              </Grid>
+              <div className={classNames(classes.layout, classes.cardGrid)}>
+                <Grid container spacing={40}>
+                  {board.map(
+                    ({
+                      _id,
+                      background,
+                      dateCreated,
+                      list,
+                      members,
+                      name,
+                      modelView,
+                      ownerId
+                    }) => (
+                      <Grid item key={_id} sm={6} md={4} lg={3}>
+                        <Card
+                          className={classes.card}
+                          onClick={() => this.onSubmit(_id)}
+                        >
+                          <CardMedia
+                            className={classes.cardMedia}
+                            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+                            title="Image title"
+                          />
+                          <CardContent className={classes.cardContent}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {name}
+                            </Typography>
+                            <Typography>{_id}</Typography>
+                          </CardContent>
+                          <CardActions>
+                            <Button
+                              size="small"
+                              color="primary"
+                              onClick={() => this.onSubmit(_id)}
+                            >
+                              View
+                            </Button>
+                            <Button size="small" color="primary">
+                              Edit
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    )
+                  )}
+                </Grid>
+              </div>
             </div>
-          </div>)}
-
+          )}
         </main>
 
         {/* Footer */}

@@ -1,13 +1,13 @@
 import { call, put } from 'redux-saga/effects';
 
-import { fetchBoard,addBoardRequest } from '@/services/board';
+import { fetchBoard, addBoardRequest } from '@/services/board';
 
 export const board = {
   state: {},
   reducers: {
     set(state, { boardInfo }) {
       return { ...state, boardInfo };
-    } 
+    }
   },
   effects: {
     *fetchBoard({ id }) {
@@ -24,16 +24,15 @@ export const board = {
         }
       });
     },
-    *addBoardRequest({body}) {
+    *addBoardRequest(payload) {
       const { board } = yield call(addBoardRequest, {
-        data: {body}
+        data: payload
       });
 
       yield put({
         type: 'user/myboardSingle',
-        payload: { boards:board}
+        payload: { newBoard: board }
       });
     }
-
   }
 };
