@@ -269,7 +269,7 @@ class DialogForm extends React.Component {
     var title, form;
     if (obj.isMemberForm) {
       title = 'Thêm thành viên';
-      form = <AutoCompleteTextField />;
+      form = <AutoCompleteTextField kind="card" />;
     } else if (obj.isLabelForm) {
       title = 'Thêm nhãn';
       form = (

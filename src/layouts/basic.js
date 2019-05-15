@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -161,18 +160,6 @@ class BasicLayout extends React.Component {
                             </Typography>
                             <Typography>{_id}</Typography>
                           </CardContent>
-                          <CardActions>
-                            <Button
-                              size="small"
-                              color="primary"
-                              onClick={() => this.onSubmit(_id)}
-                            >
-                              View
-                            </Button>
-                            <Button size="small" color="primary">
-                              Edit
-                            </Button>
-                          </CardActions>
                         </Card>
                       </Grid>
                     )
@@ -184,7 +171,7 @@ class BasicLayout extends React.Component {
         </main>
 
         {/* Footer */}
-        <footer className={classes.footer}>
+        {/* <footer className={classes.footer}>
           <Typography variant="h6" align="center" gutterBottom>
             Tháng 5 - 2019
           </Typography>
@@ -196,7 +183,7 @@ class BasicLayout extends React.Component {
           >
             Thực tập công nghệ phần mềm
           </Typography>
-        </footer>
+        </footer> */}
         {/* End footer */}
       </React.Fragment>
     );

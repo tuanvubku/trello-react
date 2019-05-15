@@ -14,3 +14,22 @@ export const addBoardRequest = async ({ data }) => {
     data
   });
 };
+export const editBoardRequest = async ({ data }) => {
+  return request(`${BOARD}/edit`, {
+    method: POST,
+    data
+  });
+};
+export const addMemberRequest = async ({ data }) => {
+  return request(`${BOARD}/add-member`, {
+    method: POST,
+    data: data.body
+  });
+};
+
+export const removeMemberRequest = async ({ data }) => {
+  return request(`${BOARD}/remove-member`, {
+    method: POST,
+    data: data.body
+  });
+};
