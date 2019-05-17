@@ -5,7 +5,8 @@ import {
   addBoardRequest,
   editBoardRequest,
   addMemberRequest,
-  removeMemberRequest
+  removeMemberRequest,
+  deleteBoardRequest
 } from '@/services/board';
 
 export const board = {
@@ -18,7 +19,7 @@ export const board = {
     },
     toggleshowFormAddMem(state, { value }) {
       return { ...state, showFormAddMem: value };
-    }
+    },
   },
   effects: {
     *fetchBoard({ id }) {
@@ -77,6 +78,21 @@ export const board = {
           boardInfo: board
         }
       });
-    }
+    },
+    *deleteBoardRequest({ _id, body }) {
+      console.log(`delete board  #${_id}`);
+      yield call(deleteBoardRequest, {
+        params: {
+          _id: _id
+        },
+        data: { body }
+      });
+      yield put({
+        type: 'user/removeBoard',
+        payload: {
+          _id
+        }
+      });
+    },
   }
 };

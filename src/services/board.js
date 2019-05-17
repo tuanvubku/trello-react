@@ -1,6 +1,6 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
-const { GET, POST } = METHOD;
+const { GET, POST ,DELETE} = METHOD;
 const { BOARD } = API_PATH;
 
 export const fetchBoard = async ({ query }) => {
@@ -30,6 +30,12 @@ export const addMemberRequest = async ({ data }) => {
 export const removeMemberRequest = async ({ data }) => {
   return request(`${BOARD}/remove-member`, {
     method: POST,
+    data: data.body
+  });
+};
+export const deleteBoardRequest = async ({ params, data }) => {
+  return request(`${BOARD}/${params._id}`, {
+    method: DELETE,
     data: data.body
   });
 };
