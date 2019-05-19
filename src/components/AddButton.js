@@ -113,8 +113,8 @@ class AddButton extends Component {
             backgroundColor: buttonBackground
           }}
         >
-          <Icon>add</Icon>
-          <p style={{ minWidth: 150 }}>{buttonText}</p>
+          <Icon style={{ color:this.props.color }}>add</Icon>
+          <p style={{ minWidth: 150,color:this.props.color }}>{buttonText}</p>
         </div>
       );
     };

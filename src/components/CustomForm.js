@@ -199,28 +199,17 @@ class DialogForm extends React.Component {
   move = () => {
     var { currentCard, dispatch, currentUser, boardInfo } = this.props;
     var { order, listId } = this.state;
-    if (order === null || listId === null) return false;
-    var body = {
-      _id: currentCard._id,
-      order,
-      newListId: listId,
-      idUserMove: currentUser._id
-    };
-    (async () => {
-      // because it be delay
-      await dispatch({
-        type: 'card/moveCardRequest',
-        payload: { body }
-      });
-
-      // update 2 list
-      dispatch({
-        type: 'list/fetchListOfBoard',
-        payload: {
-          boardId: boardInfo._id
-        }
-      });
-    })();
+    if (order === null || listId === null) return false; 
+    dispatch({
+      type: 'card/moveCardRequest',
+      payload: {
+        _id: currentCard._id,
+        newListId: listId,
+        oldListId: currentCard.listId,
+        idUserMove: currentUser._id,
+        order
+      }
+    });
 
     this.props.onClose(null);
   };

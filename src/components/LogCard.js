@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import deepOrange from '@material-ui/core/colors/deepOrange';
+import dateFormat from 'dateformat';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 @connect(null)
 class LogCard extends React.Component {
@@ -29,7 +30,7 @@ class LogCard extends React.Component {
         fontColor: 'brown'
       }
     };
-    const { action, imageUrl, username } = this.props;
+    const { action, imageUrl, username,dateCreated } = this.props;
     return (
       <Fragment>
         <hr />
@@ -39,6 +40,7 @@ class LogCard extends React.Component {
         <Typography style={styles.username} gutterBottom>
           <span style={{ fontWeight: 'bold' }}>{username} </span> {action}{' '}
         </Typography>
+        <Typography align="right">{dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy, h:MM:ss TT")}</Typography>
       </Fragment>
     );
   }

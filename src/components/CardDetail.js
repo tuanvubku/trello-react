@@ -14,6 +14,7 @@ import Comment from '@/components/Comment';
 import LogCard from '@/components/LogCard';
 import Tooltip from '@material-ui/core/Tooltip';
 import Popover from '@material-ui/core/Popover';
+import dateFormat from 'dateformat';
 import PopupState, {
   bindTrigger,
   bindPopover
@@ -407,6 +408,9 @@ class CardDetail extends React.Component {
     var formEditDescription = isEditDescription
       ? this.formEdit('description', description)
       : null;
+      if(deadline) 
+      var Deadline= dateFormat(new Date(deadline), "dddd, mmmm dS, yyyy, h:MM:ss TT") ;
+      else    var Deadline='Chưa có deadline';
     return (
       <div>
         <Dialog
@@ -619,7 +623,7 @@ class CardDetail extends React.Component {
                     {' '}
                     access_time{' '}
                   </i>
-                  Deadline: {deadline === '' ? deadline : 'Chưa có deadline'}
+                  Deadline: {Deadline}
                 </Typography>
                 <hr />
                 <Typography
@@ -642,7 +646,7 @@ class CardDetail extends React.Component {
                 </Typography>
 
                 <Typography gutterBottom>
-                  {description === '' ? description : 'Chưa có mô tả'}
+                  {description !== '' ? description : 'Chưa có mô tả'}
                 </Typography>
 
                 {formEditDescription}
@@ -721,11 +725,12 @@ class CardDetail extends React.Component {
                   </i>{' '}
                   Hoạt động{' '}
                 </Typography>
-                {logCards.map(({ action, cardId, _id, ownerId }) => (
+                {logCards.map(({ action, cardId, _id, ownerId,dateCreated }) => (
                   <LogCard
                     action={action}
                     cardId={cardId}
                     key={_id}
+                    dateCreated={dateCreated}
                     imageUrl={ownerId.imageUrl}
                     username={ownerId.username}
                   />

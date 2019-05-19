@@ -16,7 +16,10 @@ export const list = {
     set(state, { lists }) {
       // console.log(lists);
       return { ...state, lists };
-    }
+    },
+    clear(state, {  }) {
+      return { ...state, lists:[] };
+    },
   },
   effects: {
     *fetchListOfBoard({ boardId }) {

@@ -8,6 +8,7 @@ import deepOrange from '@material-ui/core/colors/deepOrange';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import Textarea from 'react-textarea-autosize';
 import Button from '@material-ui/core/Button';
+import dateFormat from 'dateformat';
 
 @connect(({ user, card }) => ({
   currentUser: user.user,
@@ -139,8 +140,8 @@ class Comment extends React.Component {
     ) : (
       <div>
         <Typography gutterBottom>{content}</Typography>
-        <a style={{ float: 'right' }} onClick={this.edit}>
-          <i className="material-icons md-18">edit</i>
+        <a style={{ float: 'right', cursor:'pointer' }} onClick={this.edit}>
+          <i className="material-icons md-18" style={{fontSize:15}}>edit</i>
         </a>
       </div>
     );
@@ -151,11 +152,12 @@ class Comment extends React.Component {
           {username.substring(0, 2)}
         </Avatar>
         <Typography style={styles.username} gutterBottom>
-          {username} {dateCreated}
+          {username} 
         </Typography>
         <Card style={styles.cardContainer} onClick={this.onClick}>
           <CardContent>{body}</CardContent>
         </Card>
+        <Typography align="right">{dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy, h:MM:ss TT")}</Typography>
         <hr />
       </Fragment>
     );

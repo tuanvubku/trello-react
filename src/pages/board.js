@@ -134,11 +134,12 @@ const customStyle = {
     backgroundColor: deepPurple[500]
   }
 };
-@connect(({ board, list, user }) => ({
+@connect(({ board, list, user,card }) => ({
   boardInfo: board.boardInfo,
   lists: list.lists,
   currentUser: user.user,
-  showFormAddMem: board.showFormAddMem
+  showFormAddMem: board.showFormAddMem,
+  cards:card.cards
 }))
 class Board extends React.Component {
   constructor(props) {
@@ -156,10 +157,10 @@ class Board extends React.Component {
       showFormAddMem: true
     };
   }
-  componentWillReceiveProps(props) {
-    document.body.style.backgroundColor = this.state.background;
+  componentWillReceiveProps(props) { 
     const { boardInfo = {}, showFormAddMem } = props;
     var { modeView, name, background } = boardInfo;
+    document.body.style.backgroundColor = background; 
     this.setState({ boardName: name, background, modeView, showFormAddMem });
   }
   componentWillUnmount() {
@@ -286,6 +287,7 @@ class Board extends React.Component {
       gray: 'white'
     };
     const { lists = [], boardInfo = {} } = this.props;
+    var {loading}=this.state;
     const { _id: boardId } = boardInfo;
     var members = boardInfo.members || [];
     return (
@@ -679,7 +681,7 @@ class Board extends React.Component {
                   idBoard={boardId}
                 />
               ))}
-              <AddButton list />
+              <AddButton  list color={mapColor[this.state.background] ? mapColor[this.state.background] : 'white'} />
               <CardDetail />
             </div>
           </div>
