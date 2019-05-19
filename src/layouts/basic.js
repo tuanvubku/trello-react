@@ -14,15 +14,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Header from '@/layouts/header';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import dateFormat from 'dateformat';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
+import Welcome from '@/components/Welcome';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const styles = theme => ({
   appBar: {
@@ -79,7 +77,12 @@ const styles = theme => ({
 class BasicLayout extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { openDiaglogRemove: false }
+    this.state = { openDiaglogRemove: false, isLogin:props.user.username!==undefined }
+  }
+  componentWillReceiveProps(props)
+  {
+    if(props.user.username)this.setState({isLogin:true});
+    else this.setState({isLogin:false}); 
   }
   toLogin = () => {
     navigate(`/auth/login`);
@@ -107,53 +110,14 @@ class BasicLayout extends React.Component {
     this.setState({ openDiaglogRemove: false });
   };
   render() {
-    const { user, classes, board = [] } = this.props;
-    var welcome = (
-      <div className={classes.heroContent}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
-          Trello React
-        </Typography>
-        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-          Sản phẩm dựa trên ý tưởng của trello, chào mừng bạn đến với trello
-          clone :))
-        </Typography>
-        <div className={classes.heroButtons}>
-          <Grid container spacing={16} justify="center">
-            <Grid item>
-              <Button
-                onClick={this.toLogin}
-                variant="contained"
-                color="primary"
-              >
-                Đăng nhập sử dụng ngay
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={this.toSignUp}
-                variant="outlined"
-                color="primary"
-              >
-                Đăng kí tài khoản
-              </Button>
-            </Grid>
-          </Grid>
-        </div>
-      </div>
-    );
-    if (user.username) welcome = null;
+    const {  classes, board = [] } = this.props;
+    var {isLogin} =this.state;  
     return (
       <React.Fragment>
         <CssBaseline />
         <Header />
         <main>
-          <div className={classes.heroUnit}>{welcome} </div>
+          <div className={classes.heroUnit}>{isLogin===false?<Welcome/>:null} </div>
           {this.props.children !== undefined ? (
             this.props.children
           ) : (
@@ -184,10 +148,9 @@ class BasicLayout extends React.Component {
                                 title={name}
                                 subheader={dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy")}
                                 style={{ backgroundColor: '#e0ddd0' }}
-                              >
+                              />
 
 
-                              </CardHeader>
                               <CardMedia
                                 className={classes.cardMedia}
                                 image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
