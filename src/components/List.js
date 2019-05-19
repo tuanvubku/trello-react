@@ -8,7 +8,7 @@ import { Droppable } from 'react-beautiful-dnd';
 @connect(({ card }) => ({
   globalCards: card.cards
 }))
-class List extends React.Component {
+class TrelloList extends React.Component {
   state = {
     globalCards: []
   };
@@ -58,4 +58,4 @@ class List extends React.Component {
   }
 }
 
-export default List;
+export default TrelloList;

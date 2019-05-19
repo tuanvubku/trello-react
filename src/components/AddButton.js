@@ -114,7 +114,7 @@ class AddButton extends Component {
           }}
         >
           <Icon>add</Icon>
-          <p>{buttonText}</p>
+          <p style={{ minWidth: 150 }}>{buttonText}</p>
         </div>
       );
     };

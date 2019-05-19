@@ -215,15 +215,207 @@ class PrimarySearchAppBar extends React.Component {
         open={isMobileMenuOpen}
         onClose={this.handleMenuClose}
       >
-        <MenuItem onClick={this.handleMobileMenuClose}>
-          <IconButton color="inherit">
-            <Icon className={classes.icon} color="disabled" fontSize="large">
+        {/* form add board */}
+        <PopupState variant="popover" popupId="demo-popup-popover">
+          {popupState => (
+            <div>
               {' '}
-              add_circle{' '}
-            </Icon>
-          </IconButton>
-          <p>Thêm bảng</p>
-        </MenuItem>
+              <MenuItem {...bindTrigger(popupState)}>
+                <IconButton color="inherit">
+                  <Icon
+                    className={classes.icon}
+                    color="disabled"
+                    fontSize="large"
+                  >
+                    {' '}
+                    add_circle{' '}
+                  </Icon>
+                </IconButton>
+                <p>Thêm bảng</p>
+              </MenuItem>
+              <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+              >
+                <div style={customStyle.textField}>
+                  <TextField
+                    margin="dense"
+                    label="Tên bảng"
+                    style={styles.textField}
+                    value={this.state.boardName}
+                    fullWidth
+                    onChange={this.handleChange}
+                    variant="outlined"
+                    name="boardName"
+                  />
+                  <br />
+                  <Typography
+                    gutterBottom
+                    variant="subtitle1"
+                    style={customStyle.title}
+                  >
+                    <Checkbox
+                      checked={this.state.isPublic}
+                      name="isPublic"
+                      onChange={this.handleChange}
+                    />
+                    Công khai
+                  </Typography>
+                  <Typography
+                    gutterBottom
+                    variant="subtitle1"
+                    style={customStyle.title}
+                  >
+                    Màu nền
+                  </Typography>
+                  <br />
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'red',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'yellow',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'orange',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>{' '}
+                  <br />
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'blue',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'green',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#d27af4',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>{' '}
+                  <br />
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: '#1eedab',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'gray',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    {' '}
+                  </Button>
+                  <Button
+                    onClick={this.clickLabel}
+                    name="label"
+                    variant="contained"
+                    style={{
+                      backgroundColor: 'white',
+                      height: 35,
+                      width: 100
+                    }}
+                    className={classes.button}
+                  >
+                    <i style={{ float: 'right' }}>✔</i>
+                  </Button>
+                  <br />
+                  <Button
+                    style={customStyle.button}
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (this.state.boardName !== '') {
+                        popupState.close();
+                        this.createBoard();
+                      }
+                    }}
+                  >
+                    Tạo bảng
+                  </Button>
+                </div>
+              </Popover>
+            </div>
+          )}
+        </PopupState>
+
         <MenuItem onClick={this.handleMobileMenuClose}>
           <IconButton color="inherit">
             <Badge badgeContent={11} color="secondary">

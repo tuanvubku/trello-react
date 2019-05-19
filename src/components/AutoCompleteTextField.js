@@ -87,7 +87,7 @@ function renderSuggestion({
     <List>
       <ListItem
         {...itemProps}
-        key={suggestion.username}
+        key={suggestion._id}
         selected={isHighlighted}
         component="div"
         style={{
@@ -122,10 +122,11 @@ function getSuggestions(value) {
         return keep;
       });
 }
-@connect(({ user, card }) => ({
+@connect(({ user, card, board }) => ({
   currentUser: user.user,
   currentCard: card.currentCard,
-  allUsername: user.allUsername
+  allUsername: user.allUsername,
+  boardInfo: board.boardInfo
 }))
 class AutoCompleteTextField extends React.Component {
   constructor(props) {
@@ -144,21 +145,37 @@ class AutoCompleteTextField extends React.Component {
     suggestions = props.allUsername;
   }
   onSave = () => {
-    var { dispatch, currentUser, currentCard } = this.props;
-    var body = {
-      _id: currentCard._id,
-      idUserAdd: currentUser._id,
-      newMemberName: this.state.username
-    };
     if (!this.state.username) return false;
-    dispatch({
-      type: 'card/addMemberRequest',
-      payload: { body }
-    });
-    dispatch({
-      type: 'card/toggleSubForm',
-      payload: { kind: null, open: false }
-    });
+    var { dispatch, currentUser, currentCard, kind, boardInfo } = this.props; // kind is add mem to board or card
+    if (kind === 'card') {
+      var body = {
+        _id: currentCard._id,
+        idUserAdd: currentUser._id,
+        newMemberName: this.state.username
+      };
+      dispatch({
+        type: 'card/addMemberRequest',
+        payload: { body }
+      });
+      dispatch({
+        type: 'card/toggleSubForm',
+        payload: { kind: null, open: false }
+      });
+    } else if (kind === 'board') {
+      dispatch({
+        type: 'board/toggleshowFormAddMem', // toggle modal add mem of board
+        payload: { value: false }
+      });
+      dispatch({
+        type: 'board/addMemberRequest',
+        payload: {
+          body: {
+            _id: boardInfo._id,
+            newMemberName: this.state.username
+          }
+        }
+      });
+    }
   };
   render() {
     const { classes } = this.props;

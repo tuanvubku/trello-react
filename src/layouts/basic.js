@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,7 +12,18 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Header from '@/layouts/header';
-
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import dateFormat from 'dateformat';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Paper from '@material-ui/core/Paper';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const styles = theme => ({
   appBar: {
     position: 'relative'
@@ -61,12 +71,16 @@ const styles = theme => ({
     padding: theme.spacing.unit * 6
   }
 });
-
 @connect(({ user }) => ({
   user: user.user,
   board: user.board
 }))
+
 class BasicLayout extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { openDiaglogRemove: false }
+  }
   toLogin = () => {
     navigate(`/auth/login`);
   };
@@ -75,6 +89,22 @@ class BasicLayout extends React.Component {
   };
   onSubmit = boardId => {
     navigate(`/board/${boardId}`);
+  };
+  handleClickOpen = (_id) => { 
+    this.setState({ openDiaglogRemove: true,idPrepareRemove:_id });
+  };
+  handleClose = () => {
+    this.setState({ openDiaglogRemove: false });
+  };
+  onDelete = (_id) => {
+    console.log(_id);
+    var {  dispatch, user } = this.props;
+    var body = { ownerId: user._id };
+    dispatch({
+      type: 'board/deleteBoardRequest',
+      payload: { _id, body }
+    });
+    this.setState({ openDiaglogRemove: false });
   };
   render() {
     const { user, classes, board = [] } = this.props;
@@ -127,64 +157,79 @@ class BasicLayout extends React.Component {
           {this.props.children !== undefined ? (
             this.props.children
           ) : (
-            <div className={classNames(classes.layout, classes.cardGrid)}>
               <div className={classNames(classes.layout, classes.cardGrid)}>
-                <Grid container spacing={40}>
-                  {board.map(
-                    ({
-                      _id,
-                      background,
-                      dateCreated,
-                      list,
-                      members,
-                      name,
-                      modelView,
-                      ownerId
-                    }) => (
-                      <Grid item key={_id} sm={6} md={4} lg={3}>
-                        <Card
-                          className={classes.card}
-                          onClick={() => this.onSubmit(_id)}
-                        >
-                          <CardMedia
-                            className={classes.cardMedia}
-                            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-                            title="Image title"
-                          />
-                          <CardContent className={classes.cardContent}>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
+                <div className={classNames(classes.layout, classes.cardGrid)}>
+                  <Grid container spacing={40}>
+                    {board.map(
+                      ({
+                        _id,
+                        background,
+                        dateCreated,
+                        list,
+                        members,
+                        name,
+                        modelView,
+                        ownerId
+                      }) => (
+                          <Grid item key={_id} sm={6} md={4} lg={3}>
+                            <Card
+                              className={classes.card}
                             >
-                              {name}
-                            </Typography>
-                            <Typography>{_id}</Typography>
-                          </CardContent>
-                          <CardActions>
-                            <Button
-                              size="small"
-                              color="primary"
-                              onClick={() => this.onSubmit(_id)}
-                            >
-                              View
-                            </Button>
-                            <Button size="small" color="primary">
-                              Edit
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    )
-                  )}
-                </Grid>
+                              <CardHeader
+                                action={
+                                  <IconButton onClick={()=>this.handleClickOpen(_id)}>
+                                    <DeleteForeverIcon />
+                                  </IconButton>
+                                }
+                                title={name}
+                                subheader={dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy")}
+                                style={{ backgroundColor: '#e0ddd0' }}
+                              >
+
+
+                              </CardHeader>
+                              <CardMedia
+                                className={classes.cardMedia}
+                                image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
+                                title="Image title"
+                                onClick={() => this.onSubmit(_id)}
+                              />
+                              <CardContent className={classes.cardContent} style={{ backgroundColor: '#e0ddd0' }}>
+                                <Typography style={{ fontSize: 30 }}>
+                                  <i className="material-icons" style={{ fontSize: 40 }}>
+                                    person_outline</i> {members.length}  </Typography>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                        )
+                    )}
+                  </Grid>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          <Dialog
+            open={this.state.openDiaglogRemove}
+            onClose={this.handleClose} 
+          >
+            <DialogTitle  >Remove board</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure to remove this board pernamently?
+               </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+             </Button>
+              <Button onClick={() => { this.onDelete(this.state.idPrepareRemove) }} color="primary">
+                Delete
+               </Button>
+            </DialogActions>
+          </Dialog>
         </main>
 
         {/* Footer */}
-        <footer className={classes.footer}>
+        {/* <footer className={classes.footer}>
           <Typography variant="h6" align="center" gutterBottom>
             Tháng 5 - 2019
           </Typography>
@@ -196,7 +241,7 @@ class BasicLayout extends React.Component {
           >
             Thực tập công nghệ phần mềm
           </Typography>
-        </footer>
+        </footer> */}
         {/* End footer */}
       </React.Fragment>
     );
