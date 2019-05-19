@@ -407,10 +407,8 @@ class CardDetail extends React.Component {
     var formEditTitle = isEditTitle ? this.formEdit('title', title) : null;
     var formEditDescription = isEditDescription
       ? this.formEdit('description', description)
-      : null;
-      if(deadline) 
-      var Deadline= dateFormat(new Date(deadline), "dddd, mmmm dS, yyyy, h:MM:ss TT") ;
-      else    var Deadline='Chưa có deadline';
+      : null; 
+      var Deadline= deadline ? dateFormat(new Date(deadline), "dddd, mmmm dS, yyyy, h:MM:ss TT") : 'Chưa có deadline';
     return (
       <div>
         <Dialog

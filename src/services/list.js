@@ -1,6 +1,6 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
-const { GET, POST } = METHOD;
+const { GET, POST, DELETE } = METHOD;
 const { BOARD, LIST } = API_PATH;
 
 export const fetchListInfo = async ({ query }) => {
@@ -27,5 +27,12 @@ export const editListOfBoard = async ({ data }) => {
   return request(`${LIST}/edit`, {
     method: POST,
     data
+  });
+};
+
+export const deleteListOfBoard = async ({ params }) => {
+  console.log("delete list service")
+  return request(`${LIST}/${params._id}`, {
+    method: DELETE
   });
 };

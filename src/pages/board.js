@@ -287,7 +287,6 @@ class Board extends React.Component {
       gray: 'white'
     };
     const { lists = [], boardInfo = {} } = this.props;
-    var {loading}=this.state;
     const { _id: boardId } = boardInfo;
     var members = boardInfo.members || [];
     return (

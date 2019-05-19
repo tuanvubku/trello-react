@@ -14,15 +14,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Header from '@/layouts/header';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import dateFormat from 'dateformat';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const styles = theme => ({
   appBar: {
@@ -184,10 +181,9 @@ class BasicLayout extends React.Component {
                                 title={name}
                                 subheader={dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy")}
                                 style={{ backgroundColor: '#e0ddd0' }}
-                              >
+                              />
 
 
-                              </CardHeader>
                               <CardMedia
                                 className={classes.cardMedia}
                                 image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
