@@ -27,9 +27,10 @@ class Index extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch.user.fetchCurrentUser();
-    dispatch({ // clear list when back to home page
+    dispatch({
+      // clear list when back to home page
       type: 'list/clear',
-      payload: { }
+      payload: {}
     });
   }
   componentWillReceprops(props) {

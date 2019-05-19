@@ -1,6 +1,6 @@
 import request, { METHOD, API_PATH } from '@/utils/request';
 
-const { GET, POST ,DELETE} = METHOD;
+const { GET, POST, DELETE } = METHOD;
 const { BOARD } = API_PATH;
 
 export const fetchBoard = async ({ query }) => {

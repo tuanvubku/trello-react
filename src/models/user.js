@@ -43,7 +43,7 @@ export const user = {
       return { ...state, board: [...state.board, newBoard] };
     },
     removeBoard(state, { _id }) {
-      return { ...state, board: state.board.filter(bo=>bo._id!==_id) };
+      return { ...state, board: state.board.filter(bo => bo._id !== _id) };
     },
     setUsernames(state, { usernames }) {
       return { ...state, allUsername: usernames };

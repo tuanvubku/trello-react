@@ -23,7 +23,7 @@ export const addListOfBoard = async ({ data }) => {
 };
 
 export const editListOfBoard = async ({ data }) => {
-  console.log("edit service")
+  console.log('edit service');
   return request(`${LIST}/edit`, {
     method: POST,
     data
@@ -31,7 +31,7 @@ export const editListOfBoard = async ({ data }) => {
 };
 
 export const deleteListOfBoard = async ({ params }) => {
-  console.log("delete list service")
+  console.log('delete list service');
   return request(`${LIST}/${params._id}`, {
     method: DELETE
   });

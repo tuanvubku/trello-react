@@ -19,7 +19,7 @@ export const board = {
     },
     toggleshowFormAddMem(state, { value }) {
       return { ...state, showFormAddMem: value };
-    },
+    }
   },
   effects: {
     *fetchBoard({ id }) {
@@ -93,6 +93,6 @@ export const board = {
           _id
         }
       });
-    },
+    }
   }
 };

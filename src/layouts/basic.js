@@ -72,11 +72,10 @@ const styles = theme => ({
   user: user.user,
   board: user.board
 }))
-
 class BasicLayout extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { openDiaglogRemove: false }
+    this.state = { openDiaglogRemove: false };
   }
   toLogin = () => {
     navigate(`/auth/login`);
@@ -87,15 +86,15 @@ class BasicLayout extends React.Component {
   onSubmit = boardId => {
     navigate(`/board/${boardId}`);
   };
-  handleClickOpen = (_id) => { 
-    this.setState({ openDiaglogRemove: true,idPrepareRemove:_id });
+  handleClickOpen = _id => {
+    this.setState({ openDiaglogRemove: true, idPrepareRemove: _id });
   };
   handleClose = () => {
     this.setState({ openDiaglogRemove: false });
   };
-  onDelete = (_id) => {
+  onDelete = _id => {
     console.log(_id);
-    var {  dispatch, user } = this.props;
+    var { dispatch, user } = this.props;
     var body = { ownerId: user._id };
     dispatch({
       type: 'board/deleteBoardRequest',
@@ -154,72 +153,88 @@ class BasicLayout extends React.Component {
           {this.props.children !== undefined ? (
             this.props.children
           ) : (
+            <div className={classNames(classes.layout, classes.cardGrid)}>
               <div className={classNames(classes.layout, classes.cardGrid)}>
-                <div className={classNames(classes.layout, classes.cardGrid)}>
-                  <Grid container spacing={40}>
-                    {board.map(
-                      ({
-                        _id,
-                        background,
-                        dateCreated,
-                        list,
-                        members,
-                        name,
-                        modelView,
-                        ownerId
-                      }) => (
-                          <Grid item key={_id} sm={6} md={4} lg={3}>
-                            <Card
-                              className={classes.card}
-                            >
-                              <CardHeader
-                                action={
-                                  <IconButton onClick={()=>this.handleClickOpen(_id)}>
-                                    <DeleteForeverIcon />
-                                  </IconButton>
-                                }
-                                title={name}
-                                subheader={dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy")}
-                                style={{ backgroundColor: '#e0ddd0' }}
-                              />
+                <Grid container spacing={40}>
+                  {board.map(
+                    ({
+                      _id,
+                      background,
+                      dateCreated,
+                      list,
+                      members,
+                      name,
+                      modelView,
+                      ownerId
+                    }) => (
+                      <Grid item key={_id} sm={6} md={4} lg={3}>
+                        <Card className={classes.card}>
+                          <CardHeader
+                            action={
+                              <IconButton
+                                onClick={() => this.handleClickOpen(_id)}
+                              >
+                                <DeleteForeverIcon />
+                              </IconButton>
+                            }
+                            title={name}
+                            subheader={dateFormat(
+                              new Date(dateCreated),
+                              'dddd, mmmm dS, yyyy'
+                            )}
+                            style={{ backgroundColor: '#e0ddd0' }}
+                          />
 
-
-                              <CardMedia
-                                className={classes.cardMedia}
-                                image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
-                                title="Image title"
-                                onClick={() => this.onSubmit(_id)}
-                              />
-                              <CardContent className={classes.cardContent} style={{ backgroundColor: '#e0ddd0' }}>
-                                <Typography style={{ fontSize: 30 }}>
-                                  <i className="material-icons" style={{ fontSize: 40 }}>
-                                    person_outline</i> {members.length}  </Typography>
-                              </CardContent>
-                            </Card>
-                          </Grid>
-                        )
-                    )}
-                  </Grid>
-                </div>
+                          <CardMedia
+                            className={classes.cardMedia}
+                            image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
+                            title="Image title"
+                            onClick={() => this.onSubmit(_id)}
+                          />
+                          <CardContent
+                            className={classes.cardContent}
+                            style={{ backgroundColor: '#e0ddd0' }}
+                          >
+                            <Typography style={{ fontSize: 30 }}>
+                              <i
+                                className="material-icons"
+                                style={{ fontSize: 40 }}
+                              >
+                                person_outline
+                              </i>{' '}
+                              {members.length}{' '}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    )
+                  )}
+                </Grid>
               </div>
-            )}
+            </div>
+          )}
           <Dialog
             open={this.state.openDiaglogRemove}
-            onClose={this.handleClose} 
+            onClose={this.handleClose}
           >
-            <DialogTitle  >Remove board</DialogTitle>
+            <DialogTitle>Remove board</DialogTitle>
             <DialogContent>
               <DialogContentText>
                 Are you sure to remove this board pernamently?
-               </DialogContentText>
+              </DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} color="primary">
                 Cancel
-             </Button>
-              <Button onClick={() => { this.onDelete(this.state.idPrepareRemove) }} color="primary">
+              </Button>
+              <Button
+                onClick={() => {
+                  this.onDelete(this.state.idPrepareRemove);
+                }}
+                color="primary"
+              >
                 Delete
-               </Button>
+              </Button>
             </DialogActions>
           </Dialog>
         </main>

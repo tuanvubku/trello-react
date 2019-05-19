@@ -140,8 +140,10 @@ class Comment extends React.Component {
     ) : (
       <div>
         <Typography gutterBottom>{content}</Typography>
-        <a style={{ float: 'right', cursor:'pointer' }} onClick={this.edit}>
-          <i className="material-icons md-18" style={{fontSize:15}}>edit</i>
+        <a style={{ float: 'right', cursor: 'pointer' }} onClick={this.edit}>
+          <i className="material-icons md-18" style={{ fontSize: 15 }}>
+            edit
+          </i>
         </a>
       </div>
     );
@@ -152,12 +154,14 @@ class Comment extends React.Component {
           {username.substring(0, 2)}
         </Avatar>
         <Typography style={styles.username} gutterBottom>
-          {username} 
+          {username}
         </Typography>
         <Card style={styles.cardContainer} onClick={this.onClick}>
           <CardContent>{body}</CardContent>
         </Card>
-        <Typography align="right">{dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy, h:MM:ss TT")}</Typography>
+        <Typography align="right">
+          {dateFormat(new Date(dateCreated), 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
+        </Typography>
         <hr />
       </Fragment>
     );

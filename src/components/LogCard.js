@@ -30,7 +30,7 @@ class LogCard extends React.Component {
         fontColor: 'brown'
       }
     };
-    const { action, imageUrl, username,dateCreated } = this.props;
+    const { action, imageUrl, username, dateCreated } = this.props;
     return (
       <Fragment>
         <hr />
@@ -40,7 +40,9 @@ class LogCard extends React.Component {
         <Typography style={styles.username} gutterBottom>
           <span style={{ fontWeight: 'bold' }}>{username} </span> {action}{' '}
         </Typography>
-        <Typography align="right">{dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy, h:MM:ss TT")}</Typography>
+        <Typography align="right">
+          {dateFormat(new Date(dateCreated), 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
+        </Typography>
       </Fragment>
     );
   }
