@@ -29,7 +29,7 @@ import PopupState, {
 
 const styles = theme => ({
   root: {
-    width: '100%'
+    width: '100%',
   },
   grow: {
     flexGrow: 1
@@ -126,8 +126,14 @@ class PrimarySearchAppBar extends React.Component {
     mobileMoreAnchorEl: null,
     background: 'white',
     boardName: '',
-    isPublic: true
+    isPublic: true,
+    isLogin:this.props.currentUser.username!==undefined
   };
+  componentWillReceiveProps(props)
+  {
+    if(props.currentUser.username)this.setState({isLogin:true});
+    else this.setState({isLogin:false}); 
+  }
   toLogout = () => {
     this.setState({ anchorEl: null });
     this.handleMobileMenuClose();
@@ -188,8 +194,14 @@ class PrimarySearchAppBar extends React.Component {
       isPublic: true
     });
   };
+  toLogin = () => {
+    navigate(`/auth/login`);
+  };
+  toSignUp = () => {
+    navigate(`/auth/signUp`);
+  };
   render() {
-    const { anchorEl, mobileMoreAnchorEl } = this.state;
+    const { anchorEl, mobileMoreAnchorEl,isLogin } = this.state;
     const { classes } = this.props;
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -435,7 +447,7 @@ class PrimarySearchAppBar extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" style={{  background:'linear-gradient(135deg, green, #5067C5)'}}>
           <Toolbar>
             <IconButton
               className={classes.menuButton}
@@ -453,10 +465,11 @@ class PrimarySearchAppBar extends React.Component {
                 navigate('/');
               }}
             >
-              Trello clone
+              Trello 2019
             </Typography>
 
             <div className={classes.grow} />
+            {isLogin===true?
             <div className={classes.sectionDesktop}>
               {/* form add board */}
               <PopupState variant="popover" popupId="demo-popup-popover">
@@ -669,7 +682,8 @@ class PrimarySearchAppBar extends React.Component {
               >
                 <AccountCircle />
               </IconButton>
-            </div>
+            </div>:null}
+            {isLogin===true?
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-haspopup="true"
@@ -678,9 +692,15 @@ class PrimarySearchAppBar extends React.Component {
               >
                 <MoreIcon />
               </IconButton>
-            </div>
+            </div>:null}
+            {isLogin===true?null:
+            <div>
+            <Button variant="contained" style={{marginTop:-10,backgroundColor:'green'}}
+                  color="primary" onClick={this.toLogin}>Đăng nhập</Button>
+            <Button style={{marginTop:-10,backgroundColor:'transparent',color:'white'}}   variant="outlined" onClick={this.toSignUp}>Đăng kí</Button></div>}
           </Toolbar>
         </AppBar>
+        
         {renderMenu}
         {renderMobileMenu}
       </div>
