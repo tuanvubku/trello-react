@@ -20,6 +20,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Welcome from '@/components/Welcome';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 const styles = theme => ({
   appBar: {
@@ -75,7 +76,12 @@ const styles = theme => ({
 class BasicLayout extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { openDiaglogRemove: false };
+    this.state = { openDiaglogRemove: false, isLogin:props.user.username!==undefined }
+  }
+  componentWillReceiveProps(props)
+  {
+    if(props.user.username)this.setState({isLogin:true});
+    else this.setState({isLogin:false}); 
   }
   toLogin = () => {
     navigate(`/auth/login`);
@@ -103,113 +109,65 @@ class BasicLayout extends React.Component {
     this.setState({ openDiaglogRemove: false });
   };
   render() {
-    const { user, classes, board = [] } = this.props;
-    var welcome = (
-      <div className={classes.heroContent}>
-        <Typography
-          component="h1"
-          variant="h2"
-          align="center"
-          color="textPrimary"
-          gutterBottom
-        >
-          Trello React
-        </Typography>
-        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-          Sản phẩm dựa trên ý tưởng của trello, chào mừng bạn đến với trello
-          clone :))
-        </Typography>
-        <div className={classes.heroButtons}>
-          <Grid container spacing={16} justify="center">
-            <Grid item>
-              <Button
-                onClick={this.toLogin}
-                variant="contained"
-                color="primary"
-              >
-                Đăng nhập sử dụng ngay
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={this.toSignUp}
-                variant="outlined"
-                color="primary"
-              >
-                Đăng kí tài khoản
-              </Button>
-            </Grid>
-          </Grid>
-        </div>
-      </div>
-    );
-    if (user.username) welcome = null;
+    const {  classes, board = [] } = this.props;
+    var {isLogin} =this.state;  
     return (
       <React.Fragment>
         <CssBaseline />
         <Header />
         <main>
-          <div className={classes.heroUnit}>{welcome} </div>
+          <div className={classes.heroUnit}>{isLogin===false?<Welcome/>:null} </div>
           {this.props.children !== undefined ? (
             this.props.children
           ) : (
             <div className={classNames(classes.layout, classes.cardGrid)}>
               <div className={classNames(classes.layout, classes.cardGrid)}>
-                <Grid container spacing={40}>
-                  {board.map(
-                    ({
-                      _id,
-                      background,
-                      dateCreated,
-                      list,
-                      members,
-                      name,
-                      modelView,
-                      ownerId
-                    }) => (
-                      <Grid item key={_id} sm={6} md={4} lg={3}>
-                        <Card className={classes.card}>
-                          <CardHeader
-                            action={
-                              <IconButton
-                                onClick={() => this.handleClickOpen(_id)}
-                              >
-                                <DeleteForeverIcon />
-                              </IconButton>
-                            }
-                            title={name}
-                            subheader={dateFormat(
-                              new Date(dateCreated),
-                              'dddd, mmmm dS, yyyy'
-                            )}
-                            style={{ backgroundColor: '#e0ddd0' }}
-                          />
+                <div className={classNames(classes.layout, classes.cardGrid)}>
+                  <Grid container spacing={40}>
+                    {board.map(
+                      ({
+                        _id,
+                        background,
+                        dateCreated,
+                        list,
+                        members,
+                        name,
+                        modelView,
+                        ownerId
+                      }) => (
+                          <Grid item key={_id} sm={6} md={4} lg={3}>
+                            <Card
+                              className={classes.card}
+                            >
+                              <CardHeader
+                                action={
+                                  <IconButton onClick={()=>this.handleClickOpen(_id)}>
+                                    <DeleteForeverIcon />
+                                  </IconButton>
+                                }
+                                title={name}
+                                subheader={dateFormat(new Date(dateCreated), "dddd, mmmm dS, yyyy")}
+                                style={{ backgroundColor: '#e0ddd0' }}
+                              />
 
-                          <CardMedia
-                            className={classes.cardMedia}
-                            image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
-                            title="Image title"
-                            onClick={() => this.onSubmit(_id)}
-                          />
-                          <CardContent
-                            className={classes.cardContent}
-                            style={{ backgroundColor: '#e0ddd0' }}
-                          >
-                            <Typography style={{ fontSize: 30 }}>
-                              <i
-                                className="material-icons"
-                                style={{ fontSize: 40 }}
-                              >
-                                person_outline
-                              </i>{' '}
-                              {members.length}{' '}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </Grid>
-                    )
-                  )}
-                </Grid>
+
+                              <CardMedia
+                                className={classes.cardMedia}
+                                image="https://design.trello.com/img/mascots/mascots-graphic-1@2x.png"
+                                title="Image title"
+                                onClick={() => this.onSubmit(_id)}
+                              />
+                              <CardContent className={classes.cardContent} style={{ backgroundColor: '#e0ddd0' }}>
+                                <Typography style={{ fontSize: 30 }}>
+                                  <i className="material-icons" style={{ fontSize: 40 }}>
+                                    person_outline</i> {members.length}  </Typography>
+                              </CardContent>
+                            </Card>
+                          </Grid>
+                        )
+                    )}
+                  </Grid>
+                </div>
               </div>
             </div>
           )}
